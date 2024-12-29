@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/Eric-Cortez/Carra/controllers"
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/middleware"
@@ -17,15 +14,8 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Server Starting")
 
 	r := gin.Default()
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
 
 	r.POST("/signup", controllers.Signup)
 	r.POST("/login", controllers.Login)
