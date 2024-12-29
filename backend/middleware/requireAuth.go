@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -25,8 +24,6 @@ func RequireAuth(c *gin.Context) {
 	if strings.HasPrefix(tokenString, "Bearer ") {
 		tokenString = tokenString[len("Bearer "):]
 	}
-
-	fmt.Println(tokenString)
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SECRET")), nil
