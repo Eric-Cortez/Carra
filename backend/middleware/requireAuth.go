@@ -1,28 +1,22 @@
 package middleware
 
 import (
-	"net/http"
-	"os"
-	"strings"
-	"time"
-
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"net/http"
+	"os"
+	"time"
 )
 
 func RequireAuth(c *gin.Context) {
-	tokenString := c.GetHeader("Authorization")
 
-	if tokenString == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
+	tokenString, err := c.Cookie("token")
+	if err != nil || tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token is missing"})
 		c.Abort()
 		return
-	}
-
-	if strings.HasPrefix(tokenString, "Bearer ") {
-		tokenString = tokenString[len("Bearer "):]
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
