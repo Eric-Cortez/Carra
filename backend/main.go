@@ -4,6 +4,7 @@ import (
 	"github.com/Eric-Cortez/Carra/controllers"
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/middleware"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,14 +15,20 @@ func init() {
 }
 
 func main() {
-
+	corsConfig := cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type"},
+		AllowCredentials: true,
+	}
 	r := gin.Default()
+
+	r.Use(cors.New(corsConfig))
 
 	r.POST("/signup", controllers.Signup)
 	r.POST("/login", controllers.Login)
-	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
+	r.POST("/logout", controllers.Logout)
 	r.GET("/users", middleware.RequireAuth, controllers.GetAllUsers)
-
 
 	r.Run() // automatically looks for "PORT" env variable
 }
