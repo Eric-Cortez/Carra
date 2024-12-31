@@ -15,8 +15,9 @@ import (
 func Signup(c *gin.Context) {
 
 	var body struct {
-		Email		string
-		Password	string
+		Username string
+		Email    string
+		Password string
 	}
 
 	if c.Bind(&body) != nil {
@@ -35,7 +36,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: body.Email, HashedPassword: string(hash)}
+	user := models.User{Username: body.Username, Email: body.Email, HashedPassword: string(hash)}
 	result := initializers.DB.Create(&user)
 
 	if result.Error != nil {
@@ -49,11 +50,10 @@ func Signup(c *gin.Context) {
 	})
 }
 
-
 func Login(c *gin.Context) {
 	var body struct {
-		Email		string
-		Password	string
+		Email    string
+		Password string
 	}
 
 	if c.Bind(&body) != nil {
@@ -66,7 +66,7 @@ func Login(c *gin.Context) {
 	var user models.User
 	initializers.DB.First(&user, "email = ?", body.Email)
 
-	if(user.ID == 0) {
+	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid email or password",
 		})
@@ -102,7 +102,24 @@ func Login(c *gin.Context) {
 }
 
 func Validate(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H {
+	c.JSON(http.StatusOK, gin.H{
 		"message": "I'm logged in",
+	})
+}
+
+func GetAllUsers(c *gin.Context) {
+	var users []models.User
+
+	result := initializers.DB.Select("id, created_at, username, email").Find(&users)
+
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to fetch users",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"users": users,
 	})
 }
