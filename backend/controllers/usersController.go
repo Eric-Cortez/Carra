@@ -52,31 +52,28 @@ func Signup(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	var body struct {
-		Email    string
-		Password string
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 
-	if c.Bind(&body) != nil {
+	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to parse body",
+			"error": "Invalid request body",
 		})
 		return
 	}
 
 	var user models.User
-	initializers.DB.First(&user, "email = ?", body.Email)
-
-	if user.ID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
+	if result := initializers.DB.First(&user, "email = ?", body.Email); result.Error != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid email or password",
 		})
 		return
 	}
 
 	err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(body.Password))
-
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid email or password",
 		})
 		return
@@ -88,22 +85,22 @@ func Login(c *gin.Context) {
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to create token",
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"token": tokenString,
-	})
-}
+	c.SetCookie("token", tokenString, 3600*8, "/", "", true, true)
 
-func Validate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "I'm logged in",
+		"user": gin.H{
+			"id":        user.ID,
+			"username":  user.Username,
+			"email":     user.Email,
+			"createdAt": user.CreatedAt,
+		},
 	})
 }
 
@@ -119,7 +116,24 @@ func GetAllUsers(c *gin.Context) {
 		return
 	}
 
+	var userList []gin.H
+	for _, user := range users {
+		userList = append(userList, gin.H{
+			"id":        user.ID,
+			"username":  user.Username,
+			"email":     user.Email,
+			"createdAt": user.CreatedAt,
+		})
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"users": users,
+		"users": userList,
 	})
+}
+
+func Logout(c *gin.Context) {
+	// Clear the JWT and refresh token cookies
+	c.SetCookie("token", "", -1, "/", "", true, true)
+
+	c.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
 }
