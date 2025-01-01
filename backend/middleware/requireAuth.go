@@ -1,13 +1,14 @@
 package middleware
 
 import (
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"net/http"
-	"os"
-	"time"
 )
 
 func RequireAuth(c *gin.Context) {
@@ -40,7 +41,6 @@ func RequireAuth(c *gin.Context) {
 		if err := initializers.DB.First(&user, claims["sub"]).Error; err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 			c.Abort()
-			return
 		}
 		c.Set("user", user)
 		c.Next()
