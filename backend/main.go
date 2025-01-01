@@ -29,6 +29,8 @@ func main() {
 	r.POST("/login", controllers.Login)
 	r.POST("/logout", controllers.Logout)
 	r.GET("/users", middleware.RequireAuth, controllers.GetAllUsers)
+	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
+
 
 	r.Run() // automatically looks for "PORT" env variable
 }
