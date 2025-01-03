@@ -29,6 +29,7 @@ func main() {
 	r.POST("/login", controllers.Login)
 	r.POST("/logout", controllers.Logout)
 	r.GET("/users", middleware.RequireAuth, controllers.GetAllUsers)
+	r.GET("/users/:userId", middleware.RequireAuth, controllers.GetUserById)
 	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
 
 
