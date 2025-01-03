@@ -1,20 +1,17 @@
 import "./App.css"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import { useAppSelector } from "./app/hooks"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
-
-const PrivateRoute = ({ element }: { element: JSX.Element }) => {
-  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated)
-  return isAuthenticated ? element : <Navigate to="/" replace />
-}
+import NotFound from "./pages/NotFound"
+import PrivateRoute from "./components/PrivateRoute"
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<PrivateRoute element={<Home />} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

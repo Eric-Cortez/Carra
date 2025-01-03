@@ -5,7 +5,6 @@ import { useAppDispatch } from "../../app/hooks"
 import { useAppSelector } from "../../app/hooks"
 import type { RootState } from "../../app/store"
 
-import Cookies from "js-cookie"
 import { loginAsync } from "../../features/auth/authSlice"
 
 export type LoginCredentials = {
@@ -36,7 +35,7 @@ function Login() {
 
     try {
       await dispatch(loginAsync(credentials)).unwrap()
-      navigate("/home")
+      navigate("/")
     } catch (err) {
       //   console.error("Login failed:", error)
       console.error("Login failed:", err)

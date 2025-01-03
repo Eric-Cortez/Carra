@@ -1,6 +1,8 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import Navbar from "../../components/Navbar"
+import { useNavigate } from "react-router-dom"
+import { UNAUTHORIZED } from "../../constants/statusCodes"
 
 // Define types for the user data
 interface User {
@@ -10,6 +12,7 @@ interface User {
 }
 
 const Users: React.FC = () => {
+  const navigate = useNavigate()
   const [users, setUsers] = useState<User[]>([]) // Users state is an array of User objects
   const [error, setError] = useState<string | null>(null) // Error state can be a string or null
 
@@ -31,6 +34,9 @@ const Users: React.FC = () => {
           setUsers(data.users)
         } else {
           setError("Failed to fetch users")
+          if (response.status === UNAUTHORIZED) {
+            navigate("/login")
+          }
         }
       } catch (err) {
         setError(
@@ -46,7 +52,8 @@ const Users: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <h1>User List</h1>
+      <h1>Home Page</h1>
+      <h2>User List</h2>
       {error && <p>{error}</p>}
       <ul>
         {users.length > 0 ? (
