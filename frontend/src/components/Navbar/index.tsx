@@ -13,7 +13,7 @@ function Navbar() {
     try {
       dispatch(logoutUser())
 
-      navigate("/")
+      navigate("/logout")
     } catch (error) {
       console.error("Logout failed:", error)
     }
