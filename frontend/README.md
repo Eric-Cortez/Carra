@@ -25,3 +25,9 @@ npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
 - [Create React App](https://github.com/facebook/create-react-app/tree/main/packages/cra-template)
 - [Vite](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react)
 - [Vitest](https://github.com/vitest-dev/vitest/tree/main/examples/react-testing-lib)
+
+## Image Credits
+
+The image of the **parked black car** used in this project is by [Ville Kaisla](https://unsplash.com/@villekaisla) on [Unsplash](https://unsplash.com/photos/parked-black-car-HNCSCpWrVJA).
+
+This image is **free to use** under the [Unsplash License](https://unsplash.com/license).
