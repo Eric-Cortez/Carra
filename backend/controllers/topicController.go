@@ -9,35 +9,43 @@ import (
 )
 
 func CreateTopic(c *gin.Context) {
-	user, exists := c.Get("user")
-	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
-		return
-	}
-	u := user.(models.User)
-	var body struct {
-		Name   string
-		UserId uint
-	}
+    var body struct {
+        Name   string `json:"name" binding:"required"`
+        UserID uint   `json:"userId" binding:"required"`
+    }
 
-	if c.Bind(&body) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to parse body",
-		})
-		return
-	}
+    if err := c.ShouldBindJSON(&body); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse body", "details": err.Error()})
+        return
+    }
 
-	topic := models.Topic{Name: body.Name, UserID: u.ID}
-	result := initializers.DB.Create(&topic)
+    user, exists := c.Get("user")
 
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "failed to create topic",
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"success": "Topic Created",
-	})
+    if !exists {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+        return
+    }
 
+    u, ok := user.(models.User)
+    if !ok {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user object"})
+        return
+    }
+
+    if body.UserID != u.ID {
+        c.JSON(http.StatusForbidden, gin.H{"error": "Unable to create topic for another user"})
+        return
+    }
+
+    topic := models.Topic{
+        Name:   body.Name,
+        UserID: u.ID,
+    }
+
+    if err := initializers.DB.Create(&topic).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create topic", "details": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Topic created successfully", "topic": topic})
 }

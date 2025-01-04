@@ -131,6 +131,29 @@ func GetAllUsers(c *gin.Context) {
 	})
 }
 
+func GetUserById(c *gin.Context) {
+	userId := c.Param("userId")
+
+	var user models.User
+	result := initializers.DB.Select("id, created_at, username, email").First(&user, "id = ?", userId)
+
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "User not found",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"user": gin.H{
+			"id":        user.ID,
+			"username":  user.Username,
+			"email":     user.Email,
+			"createdAt": user.CreatedAt,
+		},
+	})
+}
+
 func Logout(c *gin.Context) {
 	// Clear the JWT and refresh token cookies
 	c.SetCookie("token", "", -1, "/", "", true, true)
