@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom"
-import { useAppDispatch } from "../../app/hooks"
-import { logoutUser } from "../../features/auth/authSlice"
-import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { logoutUser } from "../../features/auth/authSlice";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -9,24 +9,24 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
-} from "@/components/ui/navigation-menu"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/navigation-menu";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Separator } from "@/components/ui/separator";
 
 interface LogoutEvent extends React.MouseEvent<HTMLButtonElement> {}
 
 function Navbar() {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   async function handleLogout(e: LogoutEvent): Promise<void> {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      dispatch(logoutUser())
+      dispatch(logoutUser());
 
-      navigate("/logout")
+      navigate("/logout");
     } catch (error) {
-      console.error("Logout failed:", error)
+      console.error("Logout failed:", error);
     }
   }
   return (
@@ -50,7 +50,7 @@ function Navbar() {
       </nav>
       <Separator />
     </>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

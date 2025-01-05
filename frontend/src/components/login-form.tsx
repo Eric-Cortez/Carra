@@ -1,56 +1,57 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useNavigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "@/app/hooks"
-import { useState } from "react"
-import type { RootState } from "@/app/store"
-import { loginAsync } from "@/features/auth/authSlice"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useState } from "react";
+import type { RootState } from "@/app/store";
+import { loginAsync } from "@/features/auth/authSlice";
 export type LoginCredentials = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [credentials, setCredentials] = useState<LoginCredentials>({
     email: "",
     password: "",
-  })
+  });
 
-  const status = useAppSelector((state: RootState) => state.auth.status)
-  const error = useAppSelector((state: RootState) => state.auth.error)
+  const status = useAppSelector((state: RootState) => state.auth.status);
+  const error = useAppSelector((state: RootState) => state.auth.error);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setCredentials({
       ...credentials,
       [name]: value,
-    })
-  }
+    });
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      await dispatch(loginAsync(credentials)).unwrap()
-      navigate("/")
+      await dispatch(loginAsync(credentials)).unwrap();
+      navigate("/");
     } catch (err) {
-      console.error("Login failed:", err)
+      console.error("Login failed:", err);
     }
-  }
+  };
   // TODO seed demo user in db
   const handleDemoLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
-      await dispatch(loginAsync({ email: "demo@gmail.com", password: "demo" }))
-      navigate("/")
+      await dispatch(loginAsync({ email: "demo@gmail.com", password: "demo" }));
+      navigate("/");
     } catch (err) {
-      console.log("Demo login failed")
+      console.log("Demo login failed");
     }
-  }
+  };
 
   return (
     <form
@@ -124,5 +125,5 @@ export function LoginForm({
         </a>
       </div> */}
     </form>
-  )
+  );
 }

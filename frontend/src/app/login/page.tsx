@@ -1,6 +1,6 @@
-import { GalleryVerticalEnd } from "lucide-react"
-import { LoginForm } from "@/components/login-form"
-import splash_img from "../../assets/parked-black-car.jpg"
+import { GalleryVerticalEnd } from "lucide-react";
+import { LoginForm } from "@/components/login-form";
+import splash_img from "../../assets/parked-black-car.jpg";
 
 export default function LoginPage() {
   return (
@@ -28,5 +28,5 @@ export default function LoginPage() {
         />
       </div>
     </div>
-  )
+  );
 }

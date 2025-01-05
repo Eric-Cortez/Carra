@@ -1,20 +1,20 @@
-import type React from "react"
-import { useEffect, useState } from "react"
-import Navbar from "../../components/Navbar"
-import { useNavigate } from "react-router-dom"
-import { UNAUTHORIZED } from "../../constants/statusCodes"
+import type React from "react";
+import { useEffect, useState } from "react";
+import Navbar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { UNAUTHORIZED } from "../../constants/statusCodes";
 
 // Define types for the user data
 interface User {
-  id: number
-  username: string
-  email: string
+  id: number;
+  username: string;
+  email: string;
 }
 
 const Users: React.FC = () => {
-  const navigate = useNavigate()
-  const [users, setUsers] = useState<User[]>([]) // Users state is an array of User objects
-  const [error, setError] = useState<string | null>(null) // Error state can be a string or null
+  const navigate = useNavigate();
+  const [users, setUsers] = useState<User[]>([]); // Users state is an array of User objects
+  const [error, setError] = useState<string | null>(null); // Error state can be a string or null
 
   // Fetch users when the component mounts
   useEffect(() => {
@@ -27,27 +27,27 @@ const Users: React.FC = () => {
             // No need to manually add Authorization header; HttpOnly cookie will be sent automatically
           },
           credentials: "include", // Ensure cookies are included in the request (for cross-origin requests)
-        })
+        });
 
         if (response.ok) {
-          const data = await response.json() // Type the response as an array of User objects
-          setUsers(data.users)
+          const data = await response.json(); // Type the response as an array of User objects
+          setUsers(data.users);
         } else {
-          setError("Failed to fetch users")
+          setError("Failed to fetch users");
           if (response.status === UNAUTHORIZED) {
-            navigate("/login")
+            navigate("/login");
           }
         }
       } catch (err) {
         setError(
           "Error fetching users: " +
             (err instanceof Error ? err.message : "Unknown error"),
-        )
+        );
       }
-    }
+    };
 
-    fetchUsers()
-  }, [navigate])
+    fetchUsers();
+  }, [navigate]);
 
   return (
     <div>
@@ -67,7 +67,7 @@ const Users: React.FC = () => {
         )}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Users
+export default Users;
