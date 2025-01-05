@@ -1,0 +1,27 @@
+name: Lint Check
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: |
+          cd frontend  # Make sure to run this step inside the frontend folder
+          npm install  # Install dependencies inside the frontend directory
+
+      - name: Run ESLint
+        run: |
+          cd frontend  # Again, run inside the frontend folder
+          npm run lint  # This runs the linting script

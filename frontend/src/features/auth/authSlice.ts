@@ -1,9 +1,10 @@
-import { type PayloadAction } from "@reduxjs/toolkit"
-
-import type { LoginCredentials } from "../../pages/Login"
 import { createAppSlice } from "../../app/createAppSlice"
 import { fetchLogin, fetchLogout } from "./authAPI"
 
+type LoginCredentials = {
+  email: string
+  password: string
+}
 export interface User {
   username?: string
   email: string

@@ -47,7 +47,7 @@ const Users: React.FC = () => {
     }
 
     fetchUsers()
-  }, [])
+  }, [navigate])
 
   return (
     <div>
