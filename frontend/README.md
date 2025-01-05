@@ -1,32 +1,35 @@
-# vite-template-redux
+# **Installation**
 
-Uses [Vite](https://vitejs.dev/), [Vitest](https://vitest.dev/), and [React Testing Library](https://github.com/testing-library/react-testing-library) to create a modern [React](https://react.dev/) app compatible with [Create React App](https://create-react-app.dev/)
+## **Frontend Setup**
 
-```sh
-npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
-```
+1. Navigate to the frontend directory:
 
-## Goals
+   ```bash
+   cd frontend
+   ```
 
-- Easy migration from Create React App or Vite
-- As beginner friendly as Create React App
-- Optimized performance compared to Create React App
-- Customizable without ejecting
+2. Install dependencies:
 
-## Scripts
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+
+   ```
+
+### Scripts
 
 - `dev`/`start` - start dev server and open browser
+- `lint` - lints with eslint and prettier
 - `build` - build for production
 - `preview` - locally preview production build
 - `test` - launch test runner
 
-## Inspiration
-
-- [Create React App](https://github.com/facebook/create-react-app/tree/main/packages/cra-template)
-- [Vite](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react)
-- [Vitest](https://github.com/vitest-dev/vitest/tree/main/examples/react-testing-lib)
-
-## Image Credits
+### Image Credits
 
 The image of the **parked black car** used in this project is by [Ville Kaisla](https://unsplash.com/@villekaisla) on [Unsplash](https://unsplash.com/photos/parked-black-car-HNCSCpWrVJA).
 
