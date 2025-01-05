@@ -42,6 +42,15 @@ export function LoginForm({
       console.error("Login failed:", err)
     }
   }
+  // TODO seed demo user in db
+  const handleDemoLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      await dispatch(loginAsync({ email: "demo@gmail.com", password: "demo" }))
+      navigate("/")
+    } catch (err) {
+      console.log("Demo login failed")
+    }
+  }
 
   return (
     <form
@@ -72,12 +81,13 @@ export function LoginForm({
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
+            {/* TODO
             <a
               href="#"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
               Forgot your password?
-            </a>
+            </a> */}
           </div>
           <Input
             id="password"
@@ -95,14 +105,24 @@ export function LoginForm({
         >
           {status === "loading" ? "Logging in..." : "Login"}
         </Button>
-        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border"></div>
+        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+          <span className="relative z-10 bg-background px-2 text-muted-foreground">
+            Or continue with
+          </span>
+        </div>
       </div>
+      <div>
+        <Button variant="outline" className="w-full" onClick={handleDemoLogin}>
+          Demo
+        </Button>
+      </div>
+      {/* TODO
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
         <a href="#" className="underline underline-offset-4">
           Sign up
         </a>
-      </div>
+      </div> */}
     </form>
   )
 }
