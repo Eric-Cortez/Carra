@@ -1,8 +1,17 @@
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "../../app/hooks"
 import { logoutUser } from "../../features/auth/authSlice"
-import logo from "../../assets/logo.svg"
 import { Button } from "@/components/ui/button"
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu"
+import { ModeToggle } from "@/components/mode-toggle"
+import { Separator } from "@/components/ui/separator"
 
 interface LogoutEvent extends React.MouseEvent<HTMLButtonElement> {}
 
@@ -21,10 +30,26 @@ function Navbar() {
     }
   }
   return (
-    <nav>
-      <img src={logo} alt="Icon" width="100" height="100" />
-      <Button onClick={handleLogout}>Logout</Button>
-    </nav>
+    <>
+      <nav className="flex items-center justify-between p-4">
+        <div className="flex items-center space-x-4">Carra</div>
+        <div className="flex flex-row space-x-4">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Account</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <NavigationMenuLink>View Profile</NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          <Button onClick={handleLogout}>Logout</Button>
+          <ModeToggle />
+        </div>
+      </nav>
+      <Separator />
+    </>
   )
 }
 
