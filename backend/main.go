@@ -28,10 +28,12 @@ func main() {
 	r.POST("/signup", controllers.Signup)
 	r.POST("/login", controllers.Login)
 	r.POST("/logout", controllers.Logout)
-	r.GET("/users", middleware.RequireAuth, controllers.GetAllUsers)
 	r.GET("/users/:userId", middleware.RequireAuth, controllers.GetUserById)
+	r.GET("/users", middleware.RequireAuth, controllers.GetAllUsers)
+	r.GET("/topics", middleware.RequireAuth, controllers.GetAllTopics)
+	r.GET("/questions", middleware.RequireAuth, controllers.GetAllQuestions)
 	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
-
+	r.POST("/questions/create", middleware.RequireAuth, controllers.CreateQuestion)
 
 	r.Run() // automatically looks for "PORT" env variable
 }
