@@ -22,9 +22,9 @@ func GetAllTopics(c *gin.Context) {
 	var topicList []gin.H
 	for _, topic := range topics {
 		topicList = append(topicList, gin.H{
-			"id":     topic.ID,
-			"name":   topic.Name,
-			"userId": topic.UserID,
+			"id":        topic.ID,
+			"name":      topic.Name,
+			"userId":    topic.UserID,
 			"createdAt": topic.CreatedAt,
 		})
 	}
