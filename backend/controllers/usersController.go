@@ -155,8 +155,6 @@ func GetUserById(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	// Clear the JWT and refresh token cookies
 	c.SetCookie("token", "", -1, "/", "", true, true)
-
 	c.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
 }
