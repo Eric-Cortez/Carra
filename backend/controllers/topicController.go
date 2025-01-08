@@ -25,6 +25,7 @@ func GetAllTopics(c *gin.Context) {
 			"id":     topic.ID,
 			"name":   topic.Name,
 			"userId": topic.UserID,
+			"createdAt": topic.CreatedAt,
 		})
 	}
 
@@ -64,7 +65,7 @@ func CreateTopic(c *gin.Context) {
 
 	topic := models.Topic{
 		Name:   body.Name,
-		UserID: u.ID,
+		UserID: body.UserID,
 	}
 
 	if err := initializers.DB.Create(&topic).Error; err != nil {
@@ -72,5 +73,12 @@ func CreateTopic(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"topic": topic})
+	c.JSON(http.StatusOK, gin.H{
+		"topic": gin.H{
+			"id":        topic.ID,
+			"name":      topic.Name,
+			"userId":    topic.UserID,
+			"createdAt": topic.CreatedAt,
+		},
+	})
 }
