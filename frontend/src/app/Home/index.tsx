@@ -1,73 +1,85 @@
+import { Badge } from "@/components/ui/badge";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
+import { BASE_URL } from "@/constants/baseUrl";
 import type React from "react";
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
-import { useNavigate } from "react-router-dom";
-import { UNAUTHORIZED } from "../../constants/statusCodes";
+import moment from "moment";
 
-// Define types for the user data
-interface User {
+interface Question {
+  content: string;
+  createdAt: string;
   id: number;
-  username: string;
-  email: string;
+  title: string;
+  topicId: number;
+  userId: number;
 }
 
-const Users: React.FC = () => {
-  const navigate = useNavigate();
-  const [users, setUsers] = useState<User[]>([]); // Users state is an array of User objects
-  const [error, setError] = useState<string | null>(null); // Error state can be a string or null
+const Home: React.FC = () => {
+  const [questions, setQuestions] = useState<Question[]>([]);
 
-  // Fetch users when the component mounts
   useEffect(() => {
-    const fetchUsers = async () => {
+    async function getAllQuestions() {
       try {
-        const response = await fetch("http://localhost:8080/users", {
+        const response = await fetch(`${BASE_URL}/questions`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // No need to manually add Authorization header; HttpOnly cookie will be sent automatically
           },
-          credentials: "include", // Ensure cookies are included in the request (for cross-origin requests)
+          credentials: "include",
         });
 
         if (response.ok) {
-          const data = await response.json(); // Type the response as an array of User objects
-          setUsers(data.users);
-        } else {
-          setError("Failed to fetch users");
-          if (response.status === UNAUTHORIZED) {
-            navigate("/login");
-          }
+          const data: { questions: Question[] } = await response.json();
+          console.log(data.questions);
+          setQuestions(data.questions);
         }
       } catch (err) {
-        setError(
-          "Error fetching users: " +
-            (err instanceof Error ? err.message : "Unknown error"),
-        );
+        if (err instanceof Error) {
+          console.log(err.message);
+        }
       }
-    };
-
-    fetchUsers();
-  }, [navigate]);
+    }
+    getAllQuestions();
+  }, []);
 
   return (
-    <div>
-      <Navbar />
-      <h1>Home Page</h1>
-      <h2>User List</h2>
-      {error && <p>{error}</p>}
-      <ul>
-        {users.length > 0 ? (
-          users.map(user => (
-            <li key={user.id}>
-              {user.username} ({user.email})
-            </li>
-          ))
-        ) : (
-          <p>No users found</p>
-        )}
-      </ul>
-    </div>
+    <ResizablePanelGroup
+      direction="vertical"
+      className="min-h-[200px] max-w-full rounded-lg border md:min-w-[450px]"
+    >
+      <ResizablePanel defaultSize={25}>
+        <div className="flex h-full items-center justify-center p-6">
+          <span className="font-semibold">Ask a question?</span>
+        </div>
+      </ResizablePanel>
+      <ResizableHandle />
+      <ResizablePanel defaultSize={75}>
+        <div className="flex flex-col h-full items-center justify-start p-6 space-y-6 overflow-y-auto">
+          {questions
+            ? questions.map(quest => (
+                <div key={quest.id} className="border p-4 rounded-lg w-full">
+                  <div>{quest.title}</div>
+                  <div> {quest.content}</div>
+                  {/* TODO add topic, and user info */}
+                  <div>
+                    <Badge>Topic</Badge>
+                    <div>
+                      {moment(quest.createdAt, "YYYYMMDD")
+                        .startOf("hour")
+                        .fromNow()}
+                    </div>
+                  </div>
+                </div>
+              ))
+            : "Be the first to ask a question!"}
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 };
 
-export default Users;
+export default Home;
