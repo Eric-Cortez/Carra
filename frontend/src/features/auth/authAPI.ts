@@ -1,8 +1,8 @@
-import type { LoginCredentials } from "../../pages/Login";
+import type { LoginCredentials } from "../../components/login-form";
+import { BASE_URL } from "../../constants/baseUrl";
 
-export const BASEURL = "http://localhost:8080";
 export const fetchLogin = async (credentials: LoginCredentials) => {
-  const response = await fetch(`${BASEURL}/login`, {
+  const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const fetchLogin = async (credentials: LoginCredentials) => {
 };
 
 export const fetchLogout = async () => {
-  const response = await fetch(`${BASEURL}/logout`, {
+  const response = await fetch(`${BASE_URL}/logout`, {
     method: "POST",
   });
   if (!response.ok) {
