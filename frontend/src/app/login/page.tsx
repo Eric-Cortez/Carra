@@ -1,5 +1,5 @@
 import { GalleryVerticalEnd } from "lucide-react";
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "@/components/Forms/login-form";
 import splash_img from "../../assets/parked-black-car.jpg";
 
 export default function LoginPage() {
