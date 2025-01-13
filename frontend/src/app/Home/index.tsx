@@ -1,9 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "@/components/ui/resizable";
 import { BASE_URL } from "@/constants/baseUrl";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -46,38 +41,37 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <ResizablePanelGroup
-      direction="vertical"
-      className="min-h-[200px] max-w-full rounded-lg border md:min-w-[450px]"
-    >
-      <ResizablePanel defaultSize={25}>
-        <div className="flex h-full items-center justify-center p-6">
+    <div className="flex">
+      <div className="flex h-fit items-center justify-center m-4 p-8 border rounded-lg">
+        <span className="font-semibold">Topics</span>
+      </div>
+      <div>
+        <div className="flex items-center justify-center p-6">
           <span className="font-semibold">Ask a question?</span>
         </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={75}>
-        <div className="flex flex-col h-full items-center justify-start p-6 space-y-6 overflow-y-auto">
-          {questions
-            ? questions.map(quest => (
-                <div key={quest.id} className="border p-4 rounded-lg w-full">
-                  <div>{quest.title}</div>
-                  <div> {quest.content}</div>
-                  {/* TODO add topic, and user info */}
-                  <div>
-                    <Badge>Topic</Badge>
+        <div className="flex h-full items-center justify-center p-6">
+          <div className="flex flex-col  items-center justify-start space-y-6">
+            {questions
+              ? questions.map(quest => (
+                  <div key={quest.id} className="border p-4 rounded-lg w-full">
+                    <div>{quest.title}</div>
+                    <div> {quest.content}</div>
+                    {/* TODO add topic, and user info */}
                     <div>
-                      {moment(quest.createdAt, "YYYYMMDD")
-                        .startOf("hour")
-                        .fromNow()}
+                      <Badge>Topic</Badge>
+                      <div>
+                        {moment(quest.createdAt, "YYYYMMDD")
+                          .startOf("hour")
+                          .fromNow()}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            : "Be the first to ask a question!"}
+                ))
+              : "Be the first to ask a question!"}
+          </div>
         </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      </div>
+    </div>
   );
 };
 
