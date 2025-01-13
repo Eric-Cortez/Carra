@@ -1,4 +1,4 @@
-import type { LoginCredentials } from "../../components/login-form";
+import type { LoginCredentials } from "../../components/Forms/login-form";
 import { BASE_URL } from "../../constants/baseUrl";
 
 export const fetchLogin = async (credentials: LoginCredentials) => {

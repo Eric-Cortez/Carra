@@ -1,15 +1,11 @@
 import { Badge } from "@/components/ui/badge";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "@/components/ui/resizable";
 import { BASE_URL } from "@/constants/baseUrl";
 import type React from "react";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import QuestionForm from "@/components/Forms/question-form";
 
-interface Question {
+export interface Question {
   content: string;
   createdAt: string;
   id: number;
@@ -18,10 +14,33 @@ interface Question {
   userId: number;
 }
 
+export interface Topic {
+  name: string;
+  id: number;
+  createdAt: string;
+  userId: number;
+}
+
 const Home: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
+    async function getAllTopics() {
+      try {
+        const response = await fetch(`${BASE_URL}/topics`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTopics(data.topics);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     async function getAllQuestions() {
       try {
         const response = await fetch(`${BASE_URL}/questions`, {
@@ -34,7 +53,6 @@ const Home: React.FC = () => {
 
         if (response.ok) {
           const data: { questions: Question[] } = await response.json();
-          console.log(data.questions);
           setQuestions(data.questions);
         }
       } catch (err) {
@@ -43,42 +61,54 @@ const Home: React.FC = () => {
         }
       }
     }
+    getAllTopics();
     getAllQuestions();
   }, []);
 
   return (
-    <ResizablePanelGroup
-      direction="vertical"
-      className="min-h-[200px] max-w-full rounded-lg border md:min-w-[450px]"
-    >
-      <ResizablePanel defaultSize={25}>
-        <div className="flex h-full items-center justify-center p-6">
-          <span className="font-semibold">Ask a question?</span>
+    <div className="flex">
+      <div className="flex flex-col h-fit items-center justify-center m-4 border rounded-lg">
+        <span className="font-semibold bottom-1 p-4">Topics</span>
+        <div className="inline-block">
+          {topics &&
+            topics.map(topic => (
+              <div
+                key={`${topic.id}`}
+                className="py-2 px-4 hover:bg-secondary/80"
+              >
+                {topic.name}
+                {/* TODO Link to topics page */}
+              </div>
+            ))}
         </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={75}>
-        <div className="flex flex-col h-full items-center justify-start p-6 space-y-6 overflow-y-auto">
-          {questions
-            ? questions.map(quest => (
-                <div key={quest.id} className="border p-4 rounded-lg w-full">
-                  <div>{quest.title}</div>
-                  <div> {quest.content}</div>
-                  {/* TODO add topic, and user info */}
-                  <div>
-                    <Badge>Topic</Badge>
+      </div>
+      <div>
+        <div className="flex items-center justify-center p-6">
+          <QuestionForm />
+        </div>
+        <div className="flex items-center justify-center p-6">
+          <div className="flex flex-col  items-center justify-start space-y-6">
+            {questions
+              ? questions.map(quest => (
+                  <div key={quest.id} className="border p-4 rounded-lg w-full">
+                    <div>{quest.title}</div>
+                    <div> {quest.content}</div>
+                    {/* TODO add topic, and user info */}
                     <div>
-                      {moment(quest.createdAt, "YYYYMMDD")
-                        .startOf("hour")
-                        .fromNow()}
+                      <Badge>Topic</Badge>
+                      <div>
+                        {moment(quest.createdAt, "YYYYMMDD")
+                          .startOf("hour")
+                          .fromNow()}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            : "Be the first to ask a question!"}
+                ))
+              : "Be the first to ask a question!"}
+          </div>
         </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      </div>
+    </div>
   );
 };
 
