@@ -34,7 +34,6 @@ const Home: React.FC = () => {
 
         if (response.ok) {
           const data: { questions: Question[] } = await response.json();
-          console.log(data.questions);
           setQuestions(data.questions);
         }
       } catch (err) {
