@@ -3,9 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UNAUTHORIZED } from "../../constants/statusCodes";
 import { BASE_URL } from "@/constants/baseUrl";
-import useWebsocket from "@/utils/useWebsocket";
-import { Button } from "@/components/ui/button";
-
 
 interface User {
   id: number;
@@ -17,7 +14,6 @@ const Users: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { socket, isConnected } = useWebsocket();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -49,12 +45,6 @@ const Users: React.FC = () => {
 
     fetchUsers();
   }, [navigate]);
-
-  useEffect(() => {
-    if (isConnected) {
-      // display connected light?
-    }
-  }, [isConnected]);
 
   return (
     <div>
