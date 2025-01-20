@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 const useWebsocket = () => {
   const url = "ws://localhost:8080/ws";
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [socketId, setSocketId] = useState("");
 
@@ -12,7 +11,7 @@ const useWebsocket = () => {
 
     ws.onopen = () => {
       setIsConnected(true);
-      console.log("WebSocket connection established");
+      console.log("WebSocket connection open");
     };
 
     ws.onmessage = event => {
@@ -24,7 +23,6 @@ const useWebsocket = () => {
         default:
           console.log("Unknown message type:", data.type);
       }
-      setMessages(prevMessages => [...prevMessages, data]);
     };
 
     ws.onclose = () => {
@@ -33,6 +31,10 @@ const useWebsocket = () => {
     };
 
     ws.onerror = error => {
+      /*
+      if the websocket connection opens twice it's because of react strict mode.
+      This will not happen in a production environment. We can ignore it.
+      */
       console.error("WebSocket error:", error);
     };
 
@@ -53,7 +55,7 @@ const useWebsocket = () => {
     }
   };
 
-  return { socket, messages, isConnected, sendMessage, socketId };
+  return { socket, isConnected, sendMessage, socketId };
 };
 
 export default useWebsocket;

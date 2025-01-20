@@ -52,9 +52,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     if (isConnected) {
-      console.log("WebSocket connected, ready to send messages.");
-    } else {
-      console.error("WebSocket not connected.");
+      // display connected light?
     }
   }, [isConnected]);
 
