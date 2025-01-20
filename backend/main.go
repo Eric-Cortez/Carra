@@ -4,6 +4,7 @@ import (
 	"github.com/Eric-Cortez/Carra/controllers"
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/middleware"
+	"github.com/Eric-Cortez/Carra/websockets"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +23,7 @@ func main() {
 		AllowCredentials: true,
 	}
 	r := gin.Default()
+	wsHandler := websocket.NewWebSocketHandler()  // Create WebSocket handler instance
 
 	r.Use(cors.New(corsConfig))
 
@@ -34,6 +36,8 @@ func main() {
 	r.GET("/questions", middleware.RequireAuth, controllers.GetAllQuestions)
 	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
 	r.POST("/questions/create", middleware.RequireAuth, controllers.CreateQuestion)
+
+	r.GET("/ws", func(c *gin.Context) {wsHandler.HandleConnection(c.Writer, c.Request)})
 
 	r.Run() // automatically looks for "PORT" env variable
 }
