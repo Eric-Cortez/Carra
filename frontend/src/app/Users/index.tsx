@@ -17,7 +17,7 @@ const Users: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { socket, messages, isConnected, sendMessage, socketId } = useWebsocket();
+  const { socket, isConnected } = useWebsocket();
 
   useEffect(() => {
     const fetchUsers = async () => {
