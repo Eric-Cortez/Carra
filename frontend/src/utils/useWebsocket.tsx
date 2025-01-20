@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const useWebsocket = (url: string) => {
+const useWebsocket = () => {
+  const url = "ws://localhost:8080/ws";
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -23,7 +24,6 @@ const useWebsocket = (url: string) => {
         default:
           console.log("Unknown message type:", data.type);
       }
-      console.log(data);
       setMessages(prevMessages => [...prevMessages, data]);
     };
 
@@ -47,7 +47,7 @@ const useWebsocket = (url: string) => {
 
   const sendMessage = (message: string) => {
     if (socket && isConnected) {
-      socket.send(message);
+      socket.send(JSON.stringify(message));
     } else {
       console.error("WebSocket is not connected");
     }

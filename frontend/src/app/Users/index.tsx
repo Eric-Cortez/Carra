@@ -17,8 +17,7 @@ const Users: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const wsUrl = "ws://localhost:8080/ws";  // Use the correct WebSocket URL
-  const { socket, messages, isConnected, sendMessage } = useWebsocket(wsUrl);
+  const { socket, messages, isConnected, sendMessage, socketId } = useWebsocket();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -51,14 +50,13 @@ const Users: React.FC = () => {
     fetchUsers();
   }, [navigate]);
 
-useEffect(() => {
-  if (isConnected) {
-    console.log("WebSocket connected, ready to send messages.");
-  } else {
-    console.error("WebSocket not connected.");
-  }
-}, [isConnected]);
-
+  useEffect(() => {
+    if (isConnected) {
+      console.log("WebSocket connected, ready to send messages.");
+    } else {
+      console.error("WebSocket not connected.");
+    }
+  }, [isConnected]);
 
   return (
     <div>
@@ -75,10 +73,7 @@ useEffect(() => {
           <p>No users found</p>
         )}
       </ul>
-      <Button variant="primary" onClick={() => sendMessage("Hello from the client")}>
-          Send Message!
-        </Button>    </div>
+    </div>
   );
 };
-
 export default Users;
