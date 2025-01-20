@@ -23,8 +23,7 @@ func main() {
 		AllowCredentials: true,
 	}
 	r := gin.Default()
-	wsHandler := websocket.NewWebSocketHandler()  // Create WebSocket handler instance
-
+	wsHandler := websocket.NewWebSocketHandler()
 	r.Use(cors.New(corsConfig))
 
 	r.POST("/signup", controllers.Signup)
@@ -36,8 +35,7 @@ func main() {
 	r.GET("/questions", middleware.RequireAuth, controllers.GetAllQuestions)
 	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
 	r.POST("/questions/create", middleware.RequireAuth, controllers.CreateQuestion)
-
-	r.GET("/ws", func(c *gin.Context) {wsHandler.HandleConnection(c.Writer, c.Request)})
+	r.GET("/ws", middleware.RequireAuth, func(c *gin.Context) {wsHandler.HandleConnection(c.Writer, c.Request)})
 
 	r.Run() // automatically looks for "PORT" env variable
 }
