@@ -16,12 +16,7 @@ const Navbar: React.FC = () => {
   const { theme } = useTheme();
 
   return (
-    <div
-      className={cn(
-        "sticky top-0 z-50 bg-opacity-70 backdrop-blur-md",
-        theme === "dark" && "bg-black",
-      )}
-    >
+    <div className={cn("sticky top-0 z-50 bg-opacity-70 backdrop-blur-md")}>
       <nav className="flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
           <Link to="/">Carra</Link>

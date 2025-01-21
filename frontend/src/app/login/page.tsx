@@ -9,29 +9,23 @@ export default function LoginPage() {
   const storageKey = "vite-ui-theme";
 
   useEffect(() => {
-    const updateTheme = () => {
-      const savedTheme = localStorage.getItem(storageKey);
-      const systemPrefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-      ).matches;
+    const savedTheme = localStorage.getItem(storageKey);
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
 
-      if (savedTheme === "dark" || savedTheme === "light") {
-        setCurrentTheme(savedTheme);
-      } else if (savedTheme === "system" || !savedTheme) {
-        setCurrentTheme(systemPrefersDark ? "dark" : "light");
-      }
-    };
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setCurrentTheme(savedTheme);
+    } else if (savedTheme === "system" || !savedTheme) {
+      setCurrentTheme(systemPrefersDark ? "dark" : "light");
+    }
+  }, []); // This runs once on mount
 
-    updateTheme();
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    mediaQuery.addEventListener("change", updateTheme);
-    window.addEventListener("storage", updateTheme);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateTheme);
-      window.removeEventListener("storage", updateTheme);
-    };
-  }, []);
+  const toggleTheme = () => {
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    setCurrentTheme(newTheme);
+    localStorage.setItem(storageKey, newTheme);
+  };
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
