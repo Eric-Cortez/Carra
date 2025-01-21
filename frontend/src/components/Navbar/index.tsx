@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import AccountDropdown from "../account-dropdown";
 
 const Navbar: React.FC = () => {
-
   return (
     <div className={cn("sticky top-0 z-50 bg-opacity-70 backdrop-blur-md")}>
       <nav className="flex items-center justify-between p-4">
