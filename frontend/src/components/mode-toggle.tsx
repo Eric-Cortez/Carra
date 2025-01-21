@@ -9,20 +9,15 @@ export function ModeToggle() {
   const storageKey = "vite-ui-theme";
 
   useEffect(() => {
-    // Initialize theme from localStorage or default to system
     const savedTheme = (localStorage.getItem(storageKey) as Theme) || 'system';
     setTheme(savedTheme);
 
-    // Set up system theme detection
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const updateSystemTheme = (e: MediaQueryListEvent | MediaQueryList) => {
       setSystemTheme(e.matches ? 'dark' : 'light');
     };
 
-    // Initial check
     updateSystemTheme(mediaQuery);
-
-    // Listen for system theme changes
     mediaQuery.addEventListener('change', updateSystemTheme);
 
     return () => mediaQuery.removeEventListener('change', updateSystemTheme);
