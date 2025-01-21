@@ -64,5 +64,4 @@ const Users: React.FC = () => {
     </div>
   );
 };
-
 export default Users;
