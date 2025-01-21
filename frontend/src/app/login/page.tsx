@@ -1,8 +1,36 @@
+import { useState, useEffect } from 'react';
 import { GalleryVerticalEnd } from "lucide-react";
 import { LoginForm } from "@/components/Forms/login-form";
-import splash_img from "../../assets/parked-black-car.jpg";
+import lightCarImg from "../../assets/parked-black-car.jpg";
+import darkCarImg from "../../assets/lambo.jpg"; // You'll need to add this image
 
 export default function LoginPage() {
+  const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>('light');
+  const storageKey = "vite-ui-theme";
+
+  useEffect(() => {
+    const updateTheme = () => {
+      const savedTheme = localStorage.getItem(storageKey);
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (savedTheme === 'dark' || savedTheme === 'light') {
+        setCurrentTheme(savedTheme);
+      } else if (savedTheme === 'system' || !savedTheme) {
+        setCurrentTheme(systemPrefersDark ? 'dark' : 'light');
+      }
+    };
+
+    updateTheme();
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', updateTheme);
+    window.addEventListener('storage', updateTheme);
+
+    return () => {
+      mediaQuery.removeEventListener('change', updateTheme);
+      window.removeEventListener('storage', updateTheme);
+    };
+  }, []);
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -25,9 +53,9 @@ export default function LoginPage() {
       </div>
       <div className="relative hidden bg-muted lg:block">
         <img
-          src={splash_img}
-          alt="parked black car by Ville Kaisla on Unsplash"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          src={currentTheme === 'light' ? lightCarImg : darkCarImg}
+          alt="parked car by Ville Kaisla on Unsplash"
+          className="absolute inset-0 h-full w-full object-cover transition-all duration-300"
         />
       </div>
     </div>

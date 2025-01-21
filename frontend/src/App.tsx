@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider storageKey="vite-ui-theme">
       <BrowserRouter>
         <PrivateRoute element={<Navbar />} />
         <Routes>
