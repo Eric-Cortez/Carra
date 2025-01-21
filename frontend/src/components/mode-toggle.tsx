@@ -22,16 +22,15 @@ export function ModeToggle() {
     const root = document.documentElement;
     root.classList.remove("light", "dark");
 
-    // Set effective theme based on the system or user choice
     const effectiveTheme = theme === "system" ? systemTheme : theme;
     root.classList.add(effectiveTheme);
-  }, [theme, systemTheme]); // Re-run whenever theme or systemTheme changes
+  }, [theme, systemTheme]);
 
   const toggleTheme = () => {
     const currentTheme = theme === "system" ? systemTheme : theme;
     const newTheme = currentTheme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-    localStorage.setItem(storageKey, newTheme); // Store the new theme in localStorage
+    localStorage.setItem(storageKey, newTheme);
   };
 
   const effectiveTheme = theme === "system" ? systemTheme : theme;

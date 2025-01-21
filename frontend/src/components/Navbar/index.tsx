@@ -8,12 +8,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Separator } from "@/components/ui/separator";
-import { useTheme } from "../theme-provider";
 import { cn } from "@/lib/utils";
 import AccountDropdown from "../account-dropdown";
 
 const Navbar: React.FC = () => {
-  const { theme } = useTheme();
 
   return (
     <div className={cn("sticky top-0 z-50 bg-opacity-70 backdrop-blur-md")}>

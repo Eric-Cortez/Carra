@@ -19,13 +19,7 @@ export default function LoginPage() {
     } else if (savedTheme === "system" || !savedTheme) {
       setCurrentTheme(systemPrefersDark ? "dark" : "light");
     }
-  }, []); // This runs once on mount
-
-  const toggleTheme = () => {
-    const newTheme = currentTheme === "light" ? "dark" : "light";
-    setCurrentTheme(newTheme);
-    localStorage.setItem(storageKey, newTheme);
-  };
+  }, []);
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
