@@ -2,7 +2,7 @@
 
 Welcome to **Carra**, a forum dedicated to all things car-related! Whether you're a car enthusiast, DIYer, or someone looking for answers to your car questions, Carra is the place to be. Users can post questions, receive answers from others, and engage in discussions just like on popular platforms like **Reddit** or **Quora**.
 
-This project is a collaboration between **Matthew Satterwhite** and myself, showcasing my full-stack development skills with a **Go backend** and a **React frontend**. It integrates modern technologies such as **Go & GORM** for the backend, and **Vite, TypeScript, React, Redux, Redux Toolkit, Tailwind CSS** for the frontend. The application also follows best practices for code quality with **Prettier** and **ESLint** for consistent formatting and linting. We also utilize **CI workflows with GitHub Actions** to automate testing, linting, and deployment processes.
+This project is a collaboration between **Matthew Satterwhite**, **Kenneth Dodson-Knapp**, and myself, showcasing my full-stack development skills with a **Go backend** and a **React frontend**. It integrates modern technologies such as **Go & GORM** for the backend, and **Vite, TypeScript, React, Redux, Redux Toolkit, Tailwind CSS** for the frontend. The application also follows best practices for code quality with **Prettier** and **ESLint** for consistent formatting and linting. We also utilize **CI workflows with GitHub Actions** to automate testing, linting, and deployment processes.
 
 ---
 
