@@ -11,7 +11,7 @@ import (
 func GetAllQuestions(c *gin.Context) {
 	var questions []models.Question
 
-	result := initializers.DB.Find(&questions)
+	result := initializers.DB.Order("created_at desc").Find(&questions)
 	if result.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Failed to fetch questions",
