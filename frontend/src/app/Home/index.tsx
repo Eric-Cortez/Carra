@@ -4,6 +4,9 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import QuestionForm from "@/components/Forms/question-form";
+import { loadQuestionsAsync } from "@/features/questions/questionSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import type { RootState } from "@/app/store";
 
 export interface Question {
   content: string;
@@ -22,9 +25,11 @@ export interface Topic {
 }
 
 const Home: React.FC = () => {
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
-
+  const { questions, status, error } = useAppSelector(
+    (state: RootState) => state.questions,
+  );
+  const dispatch = useAppDispatch();
   useEffect(() => {
     async function getAllTopics() {
       try {
@@ -40,30 +45,10 @@ const Home: React.FC = () => {
         console.log(err);
       }
     }
-
-    async function getAllQuestions() {
-      try {
-        const response = await fetch(`${BASE_URL}/questions`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          const data: { questions: Question[] } = await response.json();
-          setQuestions(data.questions);
-        }
-      } catch (err) {
-        if (err instanceof Error) {
-          console.log(err.message);
-        }
-      }
-    }
     getAllTopics();
-    getAllQuestions();
-  }, []);
+
+    dispatch(loadQuestionsAsync());
+  }, [dispatch]);
 
   return (
     <div className="flex">
@@ -87,6 +72,8 @@ const Home: React.FC = () => {
           <QuestionForm />
         </div>
         <div className="flex items-center justify-center p-6">
+          {status === "loading" && <p>Loading...</p>}
+          {status === "failed" && <p>Error: {error}</p>}
           <div className="flex flex-col  items-center justify-start space-y-6">
             {questions
               ? questions.map(quest => (
