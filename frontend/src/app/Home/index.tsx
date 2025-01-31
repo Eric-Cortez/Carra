@@ -7,6 +7,7 @@ import QuestionForm from "@/components/Forms/question-form";
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import type { RootState } from "@/app/store";
+import AskQuestionModalBtn from "@/components/AskQuestionModal";
 
 export interface Question {
   content: string;
@@ -68,8 +69,8 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div>
-        <div className="flex items-center justify-center p-6">
-          <QuestionForm />
+        <div className="flex items-center justify-end p-6">
+          <AskQuestionModalBtn />
         </div>
         <div className="flex items-center justify-center p-6">
           {status === "loading" && <p>Loading...</p>}

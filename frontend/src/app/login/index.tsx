@@ -4,7 +4,7 @@ import { LoginForm } from "@/components/Forms/login-form";
 import lightCarImg from "../../assets/parked-black-car.jpg";
 import darkCarImg from "../../assets/lambo.jpg";
 
-export default function LoginPage() {
+export default function Login() {
   const [currentTheme, setCurrentTheme] = useState<"dark" | "light">("light");
   const storageKey = "vite-ui-theme";
 
