@@ -6,7 +6,6 @@ import {
   Form,
   FormField,
   FormItem,
-  FormLabel,
   FormControl,
   FormMessage,
 } from "../ui/form";
@@ -23,6 +22,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "@/constants/baseUrl";
 import type { Topic } from "../../app/Home";
 import { Textarea } from "@/components/ui/textarea";
+import { DialogClose, DialogFooter } from "../ui/dialog";
 
 const formSchema = z.object({
   title: z
@@ -88,8 +88,7 @@ const QuestionForm: React.FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-2/3">
-        <FormLabel className="m-0">Ask a question</FormLabel>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
         <FormField
           control={form.control}
           name="title"
@@ -147,7 +146,11 @@ const QuestionForm: React.FC = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="submit">Submit</Button>
+            </DialogClose>
+          </DialogFooter>
         </div>
       </form>
     </Form>
