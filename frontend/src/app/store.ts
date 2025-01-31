@@ -5,6 +5,7 @@ import { authSlice } from "../features/auth/authSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import expireTransform from "redux-persist-expire";
+import { questionSlice } from "@/features/questions/questionSlice";
 
 const persistConfig = {
   key: "auth",
@@ -27,6 +28,7 @@ const persistedAuthReducer = persistReducer(persistConfig, authSlice.reducer);
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const rootReducer = combineSlices({
   auth: persistedAuthReducer,
+  questions: questionSlice.reducer,
   // Other slices can go here
 });
 
