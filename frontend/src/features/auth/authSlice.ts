@@ -1,3 +1,4 @@
+import { clearAuthState } from "@/utils/authHelpers";
 import { createAppSlice } from "../../app/createAppSlice";
 import { fetchLogin, fetchLogout } from "./authAPI";
 
@@ -55,6 +56,7 @@ export const authSlice = createAppSlice({
     logoutUser: create.reducer(state => {
       state.isAuthenticated = false;
       state.user = null;
+      clearAuthState();
     }),
     logoutAsync: create.asyncThunk(async () => await fetchLogout(), {
       pending: state => {

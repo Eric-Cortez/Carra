@@ -1,7 +1,7 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UNAUTHORIZED } from "../../constants/statusCodes";
+import { UNAUTHORIZED_CODE } from "../../constants/statusCodes";
 import { BASE_URL } from "@/constants/baseUrl";
 
 interface User {
@@ -31,7 +31,7 @@ const Users: React.FC = () => {
           setUsers(data.users);
         } else {
           setError("Failed to fetch users");
-          if (response.status === UNAUTHORIZED) {
+          if (response.status === UNAUTHORIZED_CODE) {
             navigate("/login");
           }
         }
