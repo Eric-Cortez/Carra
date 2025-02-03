@@ -1,57 +1,25 @@
 import { Badge } from "@/components/ui/badge";
-import { BASE_URL } from "@/constants/baseUrl";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import moment from "moment";
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import type { RootState } from "@/app/store";
 import AskQuestionModalBtn from "@/components/AskQuestionModal";
 import { useUnauthorizedRedirect } from "../authHooks";
-
-export interface Question {
-  content: string;
-  createdAt: string;
-  id: number;
-  title: string;
-  topicId: number;
-  userId: number;
-}
-
-export interface Topic {
-  name: string;
-  id: number;
-  createdAt: string;
-  userId: number;
-}
+import { loadTopicsAsync } from "@/features/topics/topicSlice";
 
 const Home: React.FC = () => {
   const { questions, status, error } = useAppSelector(
     (state: RootState) => state.questions,
   );
+  const { topics } = useAppSelector((state: RootState) => state.topics);
   useUnauthorizedRedirect(error);
-
-  const [topics, setTopics] = useState<Topic[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(loadQuestionsAsync());
-
-    async function getAllTopics() {
-      try {
-        const response = await fetch(`${BASE_URL}/topics`, {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setTopics(data.topics);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getAllTopics();
+    dispatch(loadTopicsAsync());
   }, [dispatch]);
 
   return (
@@ -84,15 +52,21 @@ const Home: React.FC = () => {
                   <div key={quest.id} className="border p-4 rounded-lg w-full">
                     <div>{quest.title}</div>
                     <div> {quest.content}</div>
-                    {/* TODO add topic, and user info */}
-                    <div>
-                      <Badge>Topic</Badge>
+                    {topics && (
                       <div>
-                        {moment(quest.createdAt, "YYYYMMDD")
-                          .startOf("hour")
-                          .fromNow()}
+                        <Badge>
+                          {
+                            topics.find(topic => topic.id === quest.topicId)
+                              ?.name
+                          }
+                        </Badge>
+                        <div>
+                          {moment(quest.createdAt, "YYYYMMDD")
+                            .startOf("hour")
+                            .fromNow()}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))
               : "Be the first to ask a question!"}
