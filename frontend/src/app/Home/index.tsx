@@ -3,11 +3,11 @@ import { BASE_URL } from "@/constants/baseUrl";
 import type React from "react";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import QuestionForm from "@/components/Forms/question-form";
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import type { RootState } from "@/app/store";
 import AskQuestionModalBtn from "@/components/AskQuestionModal";
+import { useUnauthorizedRedirect } from "../authHooks";
 
 export interface Question {
   content: string;
@@ -26,12 +26,17 @@ export interface Topic {
 }
 
 const Home: React.FC = () => {
-  const [topics, setTopics] = useState<Topic[]>([]);
   const { questions, status, error } = useAppSelector(
     (state: RootState) => state.questions,
   );
+  useUnauthorizedRedirect(error);
+
+  const [topics, setTopics] = useState<Topic[]>([]);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
+    dispatch(loadQuestionsAsync());
+
     async function getAllTopics() {
       try {
         const response = await fetch(`${BASE_URL}/topics`, {
@@ -47,8 +52,6 @@ const Home: React.FC = () => {
       }
     }
     getAllTopics();
-
-    dispatch(loadQuestionsAsync());
   }, [dispatch]);
 
   return (

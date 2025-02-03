@@ -1,1 +1,3 @@
-export const UNAUTHORIZED = 401;
+export const UNAUTHORIZED_CODE = 401;
+
+export const UNAUTHORIZED = "Unauthorized";
