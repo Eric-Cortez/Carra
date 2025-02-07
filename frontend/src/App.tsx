@@ -19,7 +19,10 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PrivateRoute element={<Home />} />} />
           <Route path="/users" element={<PrivateRoute element={<Users />} />} />
-          <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+          <Route
+            path="/profile"
+            element={<PrivateRoute element={<Profile />} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

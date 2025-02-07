@@ -39,18 +39,21 @@ const UserProfile: React.FC = () => {
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      return d.toISOString().split('T')[0];
+      return d.toISOString().split("T")[0];
     }).reverse();
 
-    const questionsByDate = questions.reduce((acc: { [key: string]: number }, question) => {
-      const date = new Date(question.createdAt).toISOString().split('T')[0];
-      acc[date] = (acc[date] || 0) + 1;
-      return acc;
-    }, {});
+    const questionsByDate = questions.reduce(
+      (acc: { [key: string]: number }, question) => {
+        const date = new Date(question.createdAt).toISOString().split("T")[0];
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+      },
+      {},
+    );
 
     return last7Days.map(date => ({
       name: date,
-      total: questionsByDate[date] || 0
+      total: questionsByDate[date] || 0,
     }));
   };
 
@@ -77,7 +80,7 @@ const UserProfile: React.FC = () => {
       } catch (err) {
         setError(
           "Error fetching user: " +
-            (err instanceof Error ? err.message : "Unknown error")
+            (err instanceof Error ? err.message : "Unknown error"),
         );
       }
     };
@@ -121,7 +124,9 @@ const UserProfile: React.FC = () => {
           <div className="flex items-center space-x-4">
             <Avatar className="h-16 w-16">
               <AvatarFallback>
-                {user.username ? user.username[0].toUpperCase() : user.email[0].toUpperCase()}
+                {user.username
+                  ? user.username[0].toUpperCase()
+                  : user.email[0].toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="space-y-2">
@@ -131,7 +136,9 @@ const UserProfile: React.FC = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <CalendarDays className="h-4 w-4" />
-                <span>Joined {new Date(user.createdAt).toLocaleDateString()}</span>
+                <span>
+                  Joined {new Date(user.createdAt).toLocaleDateString()}
+                </span>
               </div>
             </div>
           </div>
@@ -156,7 +163,7 @@ const UserProfile: React.FC = () => {
                       fontSize={12}
                       tickLine={false}
                       axisLine={false}
-                      tickFormatter={(value) => `${value}`}
+                      tickFormatter={value => `${value}`}
                     />
                     <Bar
                       dataKey="total"
@@ -169,23 +176,25 @@ const UserProfile: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Separator />
 
           <div>
             <h2 className="text-xl font-semibold mb-4">Questions</h2>
             <div className="space-y-4 ">
               {user.questions.length > 0 ? (
-                user.questions.map((question) => (
+                user.questions.map(question => (
                   <Card key={question.id}>
-                    <CardContent className="pt-6" >
+                    <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">{question.title}</h3>
                         <Badge variant="secondary">
                           {new Date(question.createdAt).toLocaleDateString()}
                         </Badge>
                       </div>
-                      <p className="text-muted-foreground">{question.content}</p>
+                      <p className="text-muted-foreground">
+                        {question.content}
+                      </p>
                     </CardContent>
                   </Card>
                 ))
