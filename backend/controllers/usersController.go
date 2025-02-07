@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"fmt"
 
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/models"
@@ -133,6 +134,7 @@ func GetAllUsers(c *gin.Context) {
 
 func GetUserById(c *gin.Context) {
 	userId := c.Param("userId")
+	fmt.Printf("Looking for questions for user ID: %s\n", userId)
 
 	var user models.User
 	result := initializers.DB.Select("id, created_at, username, email").First(&user, "id = ?", userId)
@@ -144,12 +146,40 @@ func GetUserById(c *gin.Context) {
 		return
 	}
 
+	var questions []models.Question
+	questionsResult := initializers.DB.Debug(). // Added Debug() to see the SQL query
+		Select("id, title, content, created_at, user_id").  // Added user_id to verify it's being selected
+		Where("user_id = ?", userId).
+		Find(&questions)
+
+	fmt.Printf("Number of questions found: %d\n", len(questions))
+	fmt.Printf("Query error if any: %v\n", questionsResult.Error)
+
+	if questionsResult.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Error fetching questions",
+		})
+		return
+	}
+
+	questionsList := make([]gin.H, len(questions))
+	for i, question := range questions {
+		fmt.Printf("Question %d: ID=%v, UserID=%v\n", i, question.ID, question.UserID)
+		questionsList[i] = gin.H{
+			"id":        question.ID,
+			"title":     question.Title,
+			"content":   question.Content,
+			"createdAt": question.CreatedAt,
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"user": gin.H{
 			"id":        user.ID,
 			"username":  user.Username,
 			"email":     user.Email,
 			"createdAt": user.CreatedAt,
+			"questions": questionsList,
 		},
 	})
 }
