@@ -8,6 +8,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import Navbar from "./components/Navbar";
 import Login from "./app/Login";
+import Profile from "./app/Profile";
 
 const App = () => {
   return (
@@ -18,6 +19,10 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PrivateRoute element={<Home />} />} />
           <Route path="/users" element={<PrivateRoute element={<Users />} />} />
+          <Route
+            path="/profile"
+            element={<PrivateRoute element={<Profile />} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
