@@ -4,8 +4,9 @@ import (
 	"github.com/Eric-Cortez/Carra/controllers"
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/middleware"
-	"github.com/Eric-Cortez/Carra/websockets"
+	websocket "github.com/Eric-Cortez/Carra/websockets"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,6 +26,11 @@ func main() {
 	r := gin.Default()
 	wsHandler := websocket.NewWebSocketHandler()
 	r.Use(cors.New(corsConfig))
+	r.Use(static.Serve("/", static.LocalFile("../frontend/dist", true)))
+
+	r.NoRoute(func(c *gin.Context) {
+		c.File("../frontend/dist/index.html")
+	})
 
 	r.POST("/signup", controllers.Signup)
 	r.POST("/login", controllers.Login)
@@ -35,7 +41,7 @@ func main() {
 	r.GET("/questions", middleware.RequireAuth, controllers.GetAllQuestions)
 	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
 	r.POST("/questions/create", middleware.RequireAuth, controllers.CreateQuestion)
-	r.GET("/ws", middleware.RequireAuth, func(c *gin.Context) {wsHandler.HandleConnection(c.Writer, c.Request)})
+	r.GET("/ws", middleware.RequireAuth, func(c *gin.Context) { wsHandler.HandleConnection(c.Writer, c.Request) })
 
 	r.Run() // automatically looks for "PORT" env variable
 }
