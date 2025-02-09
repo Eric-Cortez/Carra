@@ -6,6 +6,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import expireTransform from "redux-persist-expire";
 import { questionSlice } from "@/features/questions/questionSlice";
+import { topicSlice } from "@/features/topics/topicSlice";
 
 const persistConfig = {
   key: "auth",
@@ -29,6 +30,7 @@ const persistedAuthReducer = persistReducer(persistConfig, authSlice.reducer);
 const rootReducer = combineSlices({
   auth: persistedAuthReducer,
   questions: questionSlice.reducer,
+  topics: topicSlice.reducer,
   // Other slices can go here
 });
 
