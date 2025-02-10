@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UNAUTHORIZED_CODE } from "../../constants/statusCodes";
 import { BASE_URL } from "@/constants/baseUrl";
@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { RootState } from "../store";
+import { useAppSelector } from "../hooks";
 
 interface Question {
   id: number;
@@ -33,8 +35,8 @@ const UserProfile: React.FC = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const auth = useAppSelector((state: RootState) => state.auth.user);
 
-  // Get data for the last 7 days
   const getLastSevenDays = (questions: Question[]) => {
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const d = new Date();
@@ -59,8 +61,14 @@ const UserProfile: React.FC = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+
+      if (!auth) {
+        navigate('/login');
+        return;
+      }
+      
       try {
-        const response = await fetch(`${BASE_URL}/users/1`, {
+        const response = await fetch(`${BASE_URL}/users/${auth.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
