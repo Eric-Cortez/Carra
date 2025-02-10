@@ -13,33 +13,46 @@ import AccountDropdown from "../account-dropdown";
 
 const Navbar: React.FC = () => {
   return (
-    <div className={cn("sticky top-0 z-50 bg-opacity-70 backdrop-blur-md")}>
-      <nav className="flex items-center justify-between p-4">
-        <div className="flex items-center space-x-4">
-          <Link to="/">Carra</Link>
+    <div className={cn("sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60")}>
+      <nav className="container mx-auto flex h-16 items-center justify-between px-1">
+        <div className="flex items-center gap-6">
+          <Link
+            to="/"
+            className="text-xl font-bold tracking-tight hover:text-primary transition-colors"
+          >
+            Carra
+          </Link>
         </div>
-        <div>
-          <NavigationMenu>
-            <NavigationMenuList className="space-x-2">
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link to="/users">Network</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <ModeToggle />
-              </NavigationMenuItem>
-              <NavigationMenuItem>
+
+        <NavigationMenu>
+          <NavigationMenuList className="flex items-center gap-4">
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  "bg-transparent hover:bg-accent hover:text-accent-foreground"
+                )}
+              >
+                <Link to="/users" className="flex items-center">
+                  Network
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem className="flex items-center">
+              <ModeToggle />
+            </NavigationMenuItem>
+
+            <NavigationMenuItem className="cursor-pointer">
+              <div className="ml-2">
                 <AccountDropdown />
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+              </div>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </nav>
-      <Separator />
+      <Separator className="opacity-50" />
     </div>
   );
 };
