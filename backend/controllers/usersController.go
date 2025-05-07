@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
 
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/models"
@@ -148,9 +148,10 @@ func GetUserById(c *gin.Context) {
 
 	var questions []models.Question
 	questionsResult := initializers.DB.Debug(). // Added Debug() to see the SQL query
-		Select("id, title, content, created_at, user_id").  // Added user_id to verify it's being selected
-		Where("user_id = ?", userId).
-		Find(&questions)
+							Select("id, title, content, created_at, user_id"). // Added user_id to verify it's being selected
+							Where("user_id = ?", userId).
+							Order("created_at DESC").
+							Find(&questions)
 
 	fmt.Printf("Number of questions found: %d\n", len(questions))
 	fmt.Printf("Query error if any: %v\n", questionsResult.Error)
