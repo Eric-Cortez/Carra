@@ -6,13 +6,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { logoutUser } from "@/features/auth/authSlice";
 interface LogoutEvent extends React.MouseEvent<HTMLDivElement> {}
 
 const AccountDropdown: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useAppSelector(state => state.auth.user);
   async function handleLogout(e: LogoutEvent) {
     e.preventDefault();
 
@@ -29,8 +30,15 @@ const AccountDropdown: React.FC = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>Acct</AvatarFallback>
+          {/* TODO add user profile image */}
+          {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+          <AvatarFallback>
+            {user && user.username
+              ? user.username[0].toUpperCase()
+              : user && user.email
+                ? user.email[0].toUpperCase()
+                : "Acct"}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
