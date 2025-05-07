@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { useAppSelector } from "../hooks";
 
 interface Question {
   id: number;
@@ -17,7 +18,7 @@ interface Question {
   createdAt: string;
 }
 
-interface User {
+interface UserData {
   id: number;
   username: string;
   email: string;
@@ -26,12 +27,13 @@ interface User {
 }
 
 interface UserResponse {
-  user: User;
+  user: UserData;
 }
 
 const UserProfile: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const user = useAppSelector(state => state.auth.user);
   const [error, setError] = useState<string | null>(null);
 
   // Get data for the last 7 days
@@ -60,7 +62,7 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/users/1`, {
+        const response = await fetch(`${BASE_URL}/users/${user?.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -70,7 +72,7 @@ const UserProfile: React.FC = () => {
 
         if (response.ok) {
           const data: UserResponse = await response.json();
-          setUser(data.user);
+          setUserData(data.user);
         } else {
           setError("Failed to fetch user");
           if (response.status === UNAUTHORIZED_CODE) {
@@ -112,7 +114,7 @@ const UserProfile: React.FC = () => {
     );
   }
 
-  const chartData = getLastSevenDays(user.questions);
+  const chartData = userData ? getLastSevenDays(userData.questions) : [];
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6">
@@ -137,7 +139,10 @@ const UserProfile: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <CalendarDays className="h-4 w-4" />
                 <span>
-                  Joined {new Date(user.createdAt).toLocaleDateString()}
+                  Joined{" "}
+                  {userData
+                    ? new Date(userData.createdAt).toLocaleDateString()
+                    : "N/A"}
                 </span>
               </div>
             </div>
@@ -182,8 +187,8 @@ const UserProfile: React.FC = () => {
           <div>
             <h2 className="text-xl font-semibold mb-4">Questions</h2>
             <div className="space-y-4 ">
-              {user.questions.length > 0 ? (
-                user.questions.map(question => (
+              {userData && userData.questions.length > 0 ? (
+                userData.questions.map(question => (
                   <Card key={question.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-2">
