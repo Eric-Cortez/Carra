@@ -11,6 +11,8 @@ import type { RootState } from "@/app/store";
 import AskQuestionModalBtn from "@/components/AskQuestionModal";
 import { useUnauthorizedRedirect } from "../authHooks";
 import { loadTopicsAsync, Topic } from "@/features/topics/topicSlice";
+import { Link } from "react-router-dom";
+import QuestionCard from "@/components/QuestionsCard";
 
 const Home: React.FC = () => {
   const { questions, status, error } = useAppSelector(
@@ -46,12 +48,12 @@ const Home: React.FC = () => {
       <div className="flex flex-col h-fit items-center justify-center m-4 border rounded-lg">
         <span className="font-semibold bottom-1 p-4">Topics</span>
         <div className="inline-block">
-          {/* TODO Link to topics page */}
           {topicWithCount &&
             topicWithCount.map(topic => (
-              <div
+              <Link
+                to={`/topics/${topic.id}`} // Link to the topic page
                 key={`${topic.id}`}
-                className="flex  items-center py-2 px-4 hover:bg-secondary/80"
+                className="flex items-center py-2 px-4 hover:bg-secondary/80"
               >
                 <span>{topic.name}</span>
                 {topic.questionCount > 0 && (
@@ -59,7 +61,7 @@ const Home: React.FC = () => {
                     {topic.questionCount}
                   </Badge>
                 )}
-              </div>
+              </Link>
             ))}
         </div>
       </div>
@@ -73,25 +75,13 @@ const Home: React.FC = () => {
           <div className="flex flex-col  items-center justify-start space-y-6">
             {questions
               ? questions.map(quest => (
-                  <div key={quest.id} className="border p-4 rounded-lg w-full">
-                    <div>{quest.title}</div>
-                    <div> {quest.content}</div>
-                    {topics && (
-                      <div>
-                        <Badge>
-                          {
-                            topics.find(topic => topic.id === quest.topicId)
-                              ?.name
-                          }
-                        </Badge>
-                        <div>
-                          {moment(quest.createdAt, "YYYYMMDD")
-                            .startOf("hour")
-                            .fromNow()}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <QuestionCard
+                    key={quest.id}
+                    title={quest.title}
+                    content={quest.content}
+                    topicId={quest.topicId}
+                    createdAt={quest.createdAt}
+                  />
                 ))
               : "Be the first to ask a question!"}
           </div>

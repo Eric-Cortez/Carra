@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
 
 	"github.com/Eric-Cortez/Carra/initializers"
 	"github.com/Eric-Cortez/Carra/models"
@@ -147,8 +147,8 @@ func GetUserById(c *gin.Context) {
 	}
 
 	var questions []models.Question
-	questionsResult := initializers.DB.Debug(). // Added Debug() to see the SQL query
-		Select("id, title, content, created_at, user_id").  // Added user_id to verify it's being selected
+	questionsResult := initializers.DB.Debug().
+		Select("id, title, content, created_at, user_id, topic_id"). // Added topic_id to the query
 		Where("user_id = ?", userId).
 		Find(&questions)
 
@@ -164,12 +164,14 @@ func GetUserById(c *gin.Context) {
 
 	questionsList := make([]gin.H, len(questions))
 	for i, question := range questions {
-		fmt.Printf("Question %d: ID=%v, UserID=%v\n", i, question.ID, question.UserID)
+		fmt.Printf("Question %d: ID=%v, UserID=%v, TopicID=%v\n", i, question.ID, question.UserID, question.TopicID)
 		questionsList[i] = gin.H{
 			"id":        question.ID,
 			"title":     question.Title,
 			"content":   question.Content,
 			"createdAt": question.CreatedAt,
+			"userId":    question.UserID,
+			"topicId":   question.TopicID, // Include topic_id in the response
 		}
 	}
 
