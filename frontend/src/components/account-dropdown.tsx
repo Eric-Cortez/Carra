@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { logoutUser } from "@/features/auth/authSlice";

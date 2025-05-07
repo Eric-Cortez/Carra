@@ -88,7 +88,7 @@ const UserProfile: React.FC = () => {
     };
 
     fetchUser();
-  }, [navigate]);
+  }, [navigate, user]);
 
   if (error) {
     return (
