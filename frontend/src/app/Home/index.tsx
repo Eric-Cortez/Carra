@@ -1,16 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import type React from "react";
 import { useEffect } from "react";
-import moment from "moment";
-import {
-  loadQuestionsAsync,
-  Question,
-} from "@/features/questions/questionSlice";
+import type { Question } from "@/features/questions/questionSlice";
+import { loadQuestionsAsync } from "@/features/questions/questionSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import type { RootState } from "@/app/store";
 import AskQuestionModalBtn from "@/components/AskQuestionModal";
 import { useUnauthorizedRedirect } from "../authHooks";
-import { loadTopicsAsync, Topic } from "@/features/topics/topicSlice";
+import type { Topic } from "@/features/topics/topicSlice";
+import { loadTopicsAsync } from "@/features/topics/topicSlice";
 import { Link } from "react-router-dom";
 import QuestionCard from "@/components/QuestionsCard";
 

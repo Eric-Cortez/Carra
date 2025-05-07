@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
-import { RootState } from "@/app/store";
-import { Badge } from "@/components/ui/badge";
-import moment from "moment";
+import type { RootState } from "@/app/store";
 import QuestionCard from "@/components/QuestionsCard";
 
 const Topic: React.FC = () => {

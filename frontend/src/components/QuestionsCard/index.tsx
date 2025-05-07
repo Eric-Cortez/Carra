@@ -1,8 +1,8 @@
-import React from "react";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import { useAppSelector } from "@/app/hooks";
-import { RootState } from "@/app/store";
+import type { RootState } from "@/app/store";
 
 interface QuestionCardProps {
   title: string;
