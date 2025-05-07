@@ -7,8 +7,9 @@ import NotFound from "./app/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import Navbar from "./components/Navbar";
-import Login from "./app/Login";
+import Login from "./app/login";
 import Profile from "./app/Profile";
+import Topic from "./app/Topic";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             path="/profile"
             element={<PrivateRoute element={<Profile />} />}
           />
+          <Route path="/topics/:topicId" element={<Topic />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

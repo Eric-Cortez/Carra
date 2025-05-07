@@ -6,13 +6,14 @@ import { BASE_URL } from "@/constants/baseUrl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import QuestionCard from "@/components/QuestionsCard";
 
 interface Question {
   id: number;
   title: string;
+  topicId: number;
   content: string;
   createdAt: string;
 }
@@ -183,20 +184,14 @@ const UserProfile: React.FC = () => {
             <h2 className="text-xl font-semibold mb-4">Questions</h2>
             <div className="space-y-4 ">
               {user.questions.length > 0 ? (
-                user.questions.map(question => (
-                  <Card key={question.id}>
-                    <CardContent className="pt-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-medium">{question.title}</h3>
-                        <Badge variant="secondary">
-                          {new Date(question.createdAt).toLocaleDateString()}
-                        </Badge>
-                      </div>
-                      <p className="text-muted-foreground">
-                        {question.content}
-                      </p>
-                    </CardContent>
-                  </Card>
+                user.questions.map(quest => (
+                  <QuestionCard
+                    key={quest.id}
+                    title={quest.title}
+                    content={quest.content}
+                    topicId={quest.topicId}
+                    createdAt={quest.createdAt}
+                  />
                 ))
               ) : (
                 <p className="text-muted-foreground">No questions posted yet</p>
