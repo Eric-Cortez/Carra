@@ -2,12 +2,15 @@ import { Badge } from "@/components/ui/badge";
 import type React from "react";
 import { useEffect } from "react";
 import moment from "moment";
-import { loadQuestionsAsync } from "@/features/questions/questionSlice";
+import {
+  loadQuestionsAsync,
+  Question,
+} from "@/features/questions/questionSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import type { RootState } from "@/app/store";
 import AskQuestionModalBtn from "@/components/AskQuestionModal";
 import { useUnauthorizedRedirect } from "../authHooks";
-import { loadTopicsAsync } from "@/features/topics/topicSlice";
+import { loadTopicsAsync, Topic } from "@/features/topics/topicSlice";
 
 const Home: React.FC = () => {
   const { questions, status, error } = useAppSelector(
@@ -22,19 +25,40 @@ const Home: React.FC = () => {
     dispatch(loadTopicsAsync());
   }, [dispatch]);
 
+  const getTopicsWithQuestionCount = (
+    topics: Topic[],
+    questions: Question[],
+  ) => {
+    if (!topics || !questions) return [];
+
+    const topicCounts = topics.map(topic => ({
+      ...topic,
+      questionCount: questions.filter(q => q.topicId === topic.id).length,
+    }));
+
+    return topicCounts.sort((a, b) => b.questionCount - a.questionCount);
+  };
+
+  const topicWithCount = getTopicsWithQuestionCount(topics, questions);
+
   return (
     <div className="flex">
       <div className="flex flex-col h-fit items-center justify-center m-4 border rounded-lg">
         <span className="font-semibold bottom-1 p-4">Topics</span>
         <div className="inline-block">
-          {topics &&
-            topics.map(topic => (
+          {/* TODO Link to topics page */}
+          {topicWithCount &&
+            topicWithCount.map(topic => (
               <div
                 key={`${topic.id}`}
-                className="py-2 px-4 hover:bg-secondary/80"
+                className="flex  items-center py-2 px-4 hover:bg-secondary/80"
               >
-                {topic.name}
-                {/* TODO Link to topics page */}
+                <span>{topic.name}</span>
+                {topic.questionCount > 0 && (
+                  <Badge className="bg-gray-200 text-gray-800 mx-2">
+                    {topic.questionCount}
+                  </Badge>
+                )}
               </div>
             ))}
         </div>
