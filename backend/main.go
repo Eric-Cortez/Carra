@@ -41,7 +41,7 @@ func main() {
 	r.GET("/topics", middleware.RequireAuth, controllers.GetAllTopics)
 	r.POST("/topics/create", middleware.RequireAuth, controllers.CreateTopic)
 	r.PUT("/topics/update", middleware.RequireAuth, controllers.UpdateTopic)
-	r.DELETE("/topics/delete/:id", middleware.RequireAuth, controllers.DeleteQuestion)
+	r.DELETE("/topics/delete/:id", middleware.RequireAuth, controllers.DeleteTopic)
 	r.GET("/questions", middleware.RequireAuth, controllers.GetAllQuestions)
 	r.POST("/questions/create", middleware.RequireAuth, controllers.CreateQuestion)
 	r.PUT("/questions/update", middleware.RequireAuth, controllers.UpdateQuestion)
@@ -49,3 +49,6 @@ func main() {
 	r.GET("/ws", middleware.RequireAuth, func(c *gin.Context) { wsHandler.HandleConnection(c.Writer, c.Request) })
 	r.Run()
 }
+
+
+
