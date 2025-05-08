@@ -20,7 +20,7 @@ import {
 import { useAppSelector } from "@/app/hooks";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "@/constants/baseUrl";
-import type { Topic } from "../../app/Home";
+import type { Topic } from "@/features/topics/topicSlice";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogClose, DialogFooter } from "../ui/dialog";
 

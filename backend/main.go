@@ -14,6 +14,7 @@ func init() {
 	initializers.LoadEnvVariables()
 	initializers.ConnectToDb()
 	initializers.SyncDatabase()
+	initializers.SeedDatabase()
 }
 
 func main() {
@@ -43,5 +44,5 @@ func main() {
 	r.POST("/questions/create", middleware.RequireAuth, controllers.CreateQuestion)
 	r.GET("/ws", middleware.RequireAuth, func(c *gin.Context) { wsHandler.HandleConnection(c.Writer, c.Request) })
 
-	r.Run() // automatically looks for "PORT" env variable
+	r.Run() 
 }

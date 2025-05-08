@@ -193,9 +193,9 @@ const UserProfile: React.FC = () => {
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">{question.title}</h3>
-                        <Badge variant="secondary">
+                        <span className="badge badge-secondary">
                           {new Date(question.createdAt).toLocaleDateString()}
-                        </Badge>
+                        </span>
                       </div>
                       <p className="text-muted-foreground">
                         {question.content}
