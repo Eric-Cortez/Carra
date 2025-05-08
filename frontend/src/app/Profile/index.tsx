@@ -6,7 +6,7 @@ import { BASE_URL } from "@/constants/baseUrl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge, CalendarDays, Mail } from "lucide-react";
+import { CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useAppSelector } from "../hooks";
 
