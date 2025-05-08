@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { UNAUTHORIZED_CODE } from "../../constants/statusCodes";
 import { BASE_URL } from "@/constants/baseUrl";
 
@@ -75,13 +75,14 @@ const Users: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredUsers.length > 0 ? (
           filteredUsers.map(user => (
-            <div
+            <Link
+              to={`/users/${user.id}`} // Link to the user profile page
               key={user.id}
               className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
             >
               <h2 className="text-xl font-semibold">{user.username}</h2>
               <p className="text-gray-600">{user.email}</p>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="text-center col-span-full">No users found</p>
