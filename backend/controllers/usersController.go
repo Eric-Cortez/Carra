@@ -148,7 +148,7 @@ func GetUserById(c *gin.Context) {
 
 	var questions []models.Question
 	questionsResult := initializers.DB.Debug(). // Added Debug() to see the SQL query
-							Select("id, title, content, created_at, user_id"). // Added user_id to verify it's being selected
+							Select("id, title, content, created_at, user_id, topic_id"). // Added user_id to verify it's being selected
 							Where("user_id = ?", userId).
 							Order("created_at DESC").
 							Find(&questions)

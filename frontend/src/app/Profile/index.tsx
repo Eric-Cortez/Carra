@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useAppSelector } from "../hooks";
+import QuestionCard from "@/components/QuestionsCard";
 
 interface Question {
   id: number;
@@ -188,20 +189,14 @@ const UserProfile: React.FC = () => {
             <h2 className="text-xl font-semibold mb-4">Questions</h2>
             <div className="space-y-4 ">
               {userData && userData.questions.length > 0 ? (
-                userData.questions.map(question => (
-                  <Card key={question.id}>
-                    <CardContent className="pt-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-medium">{question.title}</h3>
-                        <span className="badge badge-secondary">
-                          {new Date(question.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <p className="text-muted-foreground">
-                        {question.content}
-                      </p>
-                    </CardContent>
-                  </Card>
+                userData.questions.map(quest => (
+                  <QuestionCard
+                    key={quest.id}
+                    title={quest.title}
+                    content={quest.content}
+                    topicId={quest.topicId}
+                    createdAt={quest.createdAt}
+                  />
                 ))
               ) : (
                 <p className="text-muted-foreground">No questions posted yet</p>
