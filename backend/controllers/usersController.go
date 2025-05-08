@@ -147,10 +147,11 @@ func GetUserById(c *gin.Context) {
 	}
 
 	var questions []models.Question
-	questionsResult := initializers.DB.Debug().
-		Select("id, title, content, created_at, user_id, topic_id"). // Added topic_id to the query
-		Where("user_id = ?", userId).
-		Find(&questions)
+	questionsResult := initializers.DB.Debug(). // Added Debug() to see the SQL query
+							Select("id, title, content, created_at, user_id"). // Added user_id to verify it's being selected
+							Where("user_id = ?", userId).
+							Order("created_at DESC").
+							Find(&questions)
 
 	fmt.Printf("Number of questions found: %d\n", len(questions))
 	fmt.Printf("Query error if any: %v\n", questionsResult.Error)
@@ -171,7 +172,7 @@ func GetUserById(c *gin.Context) {
 			"content":   question.Content,
 			"createdAt": question.CreatedAt,
 			"userId":    question.UserID,
-			"topicId":   question.TopicID, // Include topic_id in the response
+			"topicId":   question.TopicID,
 		}
 	}
 
