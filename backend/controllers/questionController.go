@@ -224,7 +224,6 @@ func DeleteQuestion(c *gin.Context) {
 		return
 	}
 
-	// Commit the transaction
 	if err := tx.Commit().Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Failed to commit transaction",
