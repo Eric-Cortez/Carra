@@ -6,7 +6,6 @@ import { BASE_URL } from "@/constants/baseUrl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useAppSelector } from "../hooks";
@@ -14,6 +13,7 @@ import { useAppSelector } from "../hooks";
 interface Question {
   id: number;
   title: string;
+  topicId: number;
   content: string;
   createdAt: string;
 }

@@ -165,12 +165,14 @@ func GetUserById(c *gin.Context) {
 
 	questionsList := make([]gin.H, len(questions))
 	for i, question := range questions {
-		fmt.Printf("Question %d: ID=%v, UserID=%v\n", i, question.ID, question.UserID)
+		fmt.Printf("Question %d: ID=%v, UserID=%v, TopicID=%v\n", i, question.ID, question.UserID, question.TopicID)
 		questionsList[i] = gin.H{
 			"id":        question.ID,
 			"title":     question.Title,
 			"content":   question.Content,
 			"createdAt": question.CreatedAt,
+			"userId":    question.UserID,
+			"topicId":   question.TopicID,
 		}
 	}
 
