@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
 import type { RootState } from "@/app/store";
 import QuestionCard from "@/components/QuestionsCard";
+import { loadTopicsAsync } from "@/features/topics/topicSlice";
 
 const Topic: React.FC = () => {
   const { topicId } = useParams<{ topicId: string }>();
@@ -17,6 +18,7 @@ const Topic: React.FC = () => {
 
   useEffect(() => {
     dispatch(loadQuestionsAsync());
+    dispatch(loadTopicsAsync());
   }, [dispatch]);
 
   const filteredQuestions = questions.filter(
