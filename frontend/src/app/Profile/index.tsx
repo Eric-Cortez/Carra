@@ -6,7 +6,7 @@ import { BASE_URL } from "@/constants/baseUrl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { CalendarDays, Mail } from "lucide-react";
+import { Badge, CalendarDays, Mail } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useAppSelector } from "../hooks";
 
@@ -193,9 +193,9 @@ const UserProfile: React.FC = () => {
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">{question.title}</h3>
-                        <Badge variant="secondary">
+                        <span className="badge badge-secondary">
                           {new Date(question.createdAt).toLocaleDateString()}
-                        </Badge>
+                        </span>
                       </div>
                       <p className="text-muted-foreground">
                         {question.content}
