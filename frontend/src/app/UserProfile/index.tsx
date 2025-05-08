@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "@/constants/baseUrl";
 import moment from "moment";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import QuestionCard from "@/components/QuestionsCard";
-import { LEVELS, getUserLevel } from "@/utils/levelUtils"; // Import level utilities
+import { getUserLevel } from "@/utils/levelUtils"; // Import level utilities
 
 interface User {
   id: number;
