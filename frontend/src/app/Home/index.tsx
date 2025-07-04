@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import type { Question } from "@/features/questions/questionSlice";
+
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import type { RootState } from "@/app/store";
@@ -46,7 +46,6 @@ const Home: React.FC = () => {
                   content={quest.content}
                   topicId={quest.topicId}
                   createdAt={quest.createdAt}
-                  
                 />
               ))
             : "No questions found."}

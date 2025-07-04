@@ -1,14 +1,15 @@
 import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useAppSelector } from "@/app/hooks";
 import type { RootState } from "@/app/store";
-import { useEffect, useState } from "react";
-import { loadTopicsAsync } from "@/features/topics/topicSlice";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown } from "lucide-react";
-import { upvoteQuestionAsync, downvoteQuestionAsync } from "@/features/votes/voteSlice";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 interface QuestionCardProps {
   id: number;
@@ -19,13 +20,12 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
-  id,
+  _id, // Changed to _id to indicate it's unused within the component
   title,
   content,
   topicId,
   createdAt,
 }) => {
-  const dispatch = useAppDispatch();
   const { topics } = useAppSelector((state: RootState) => state.topics);
 
   const topicName = topics.find(topic => topic.id === topicId)?.name;
