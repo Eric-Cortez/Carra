@@ -17,6 +17,8 @@ export async function fetchLoadUsers() {
     } else if (response.status === UNAUTHORIZED_CODE) {
       clearAuthState();
       throw new Error(UNAUTHORIZED);
+    } else {
+      throw new Error(`Unexpected response status: ${response.status}`);
     }
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : String(error));
