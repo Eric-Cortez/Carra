@@ -2,7 +2,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import type { RootState } from "@/app/store";
 import AskQuestionModalBtn from "@/components/AskQuestionModal";
 import { useUnauthorizedRedirect } from "../authHooks";
