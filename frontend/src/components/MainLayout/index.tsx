@@ -101,7 +101,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         )}
       >
         {/* Page Content */}
-        <div className="p-6"> {/* Removed pt-20 */}
+        <div className="p-6">
+          {" "}
+          {/* Removed pt-20 */}
           {children}
         </div>
       </div>

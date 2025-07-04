@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UNAUTHORIZED_CODE } from "../../constants/statusCodes";
 import { BASE_URL } from "@/constants/baseUrl";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -31,7 +37,10 @@ const Profile: React.FC = () => {
   const [editableBio, setEditableBio] = useState("");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const { theme, setTheme } = useTheme();
-  const [feedbackMessage, setFeedbackMessage] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -75,8 +84,10 @@ const Profile: React.FC = () => {
     // Simulate API call
     return new Promise<void>(resolve => {
       setTimeout(() => {
-        
-        setFeedbackMessage({ message: "Profile updated successfully!", type: "success" });
+        setFeedbackMessage({
+          message: "Profile updated successfully!",
+          type: "success",
+        });
         resolve();
       }, 1000);
     }).then(() => {
@@ -90,8 +101,10 @@ const Profile: React.FC = () => {
     // Simulate API call
     return new Promise<void>(resolve => {
       setTimeout(() => {
-        
-        setFeedbackMessage({ message: "Password change initiated!", type: "success" });
+        setFeedbackMessage({
+          message: "Password change initiated!",
+          type: "success",
+        });
         resolve();
       }, 1000);
     }).then(() => {
@@ -102,14 +115,14 @@ const Profile: React.FC = () => {
   };
 
   if (error) {
-    return (
-      <div className="p-4 text-center text-destructive">{error}</div>
-    );
+    return <div className="p-4 text-center text-destructive">{error}</div>;
   }
 
   if (!userData) {
     return (
-      <div className="p-4 text-center text-muted-foreground">Loading profile...</div>
+      <div className="p-4 text-center text-muted-foreground">
+        Loading profile...
+      </div>
     );
   }
 
@@ -118,14 +131,18 @@ const Profile: React.FC = () => {
       <Card className="w-full max-w-3xl shadow-lg rounded-2xl p-4">
         <CardHeader className="flex flex-col items-center text-center">
           <Avatar className="w-24 h-24 mb-4 border-4 border-primary-foreground shadow-md">
-            <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${userData.username || userData.email}`} />
+            <AvatarImage
+              src={`https://api.dicebear.com/6.x/initials/svg?seed=${userData.username || userData.email}`}
+            />
             <AvatarFallback className="text-4xl font-semibold">
               {userData.username
                 ? userData.username[0].toUpperCase()
                 : userData.email.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <CardTitle className="text-3xl font-bold">{userData.username || userData.email}</CardTitle>
+          <CardTitle className="text-3xl font-bold">
+            {userData.username || userData.email}
+          </CardTitle>
           <CardDescription className="text-md text-muted-foreground">
             {editableBio || "No bio provided."}
           </CardDescription>
@@ -186,7 +203,9 @@ const Profile: React.FC = () => {
                 <Switch
                   id="dark-mode"
                   checked={theme === "dark"}
-                  onCheckedChange={(checked: boolean) => setTheme(checked ? "dark" : "light")}
+                  onCheckedChange={(checked: boolean) =>
+                    setTheme(checked ? "dark" : "light")
+                  }
                 />
               </div>
             </TabsContent>

@@ -13,10 +13,14 @@ import AccountDropdown from "../account-dropdown";
 
 const Navbar: React.FC = () => {
   return (
-    <div className={cn("fixed top-0 z-50 w-full bg-opacity-70 backdrop-blur-md")}>
+    <div
+      className={cn("fixed top-0 z-50 w-full bg-opacity-70 backdrop-blur-md")}
+    >
       <nav className="flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
-          <Link to="/" className="text-3xl font-bold">Carra</Link>
+          <Link to="/" className="text-3xl font-bold">
+            Carra
+          </Link>
         </div>
         <div>
           <NavigationMenu>

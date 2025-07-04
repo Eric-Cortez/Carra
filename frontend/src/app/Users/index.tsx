@@ -46,7 +46,9 @@ const Users: React.FC = () => {
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <Avatar>
-                    <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.username || user.email}`} />
+                    <AvatarImage
+                      src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.username || user.email}`}
+                    />
                     <AvatarFallback>
                       {user.username
                         ? user.username.charAt(0)

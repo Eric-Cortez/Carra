@@ -23,24 +23,21 @@ export const usersSlice = createAppSlice({
   name: "users",
   initialState,
   reducers: create => ({
-    loadUsersAsync: create.asyncThunk(
-      async () => await fetchLoadUsers(),
-      {
-        pending: state => {
-          state.status = "loading";
-          state.error = null;
-        },
-        fulfilled: (state, action) => {
-          state.status = "idle";
-          state.users = action.payload;
-        },
-        rejected: (state, action) => {
-          state.status = "failed";
-          state.error =
-            action.error.message?.toString() || "Unable to load users";
-        },
+    loadUsersAsync: create.asyncThunk(async () => await fetchLoadUsers(), {
+      pending: state => {
+        state.status = "loading";
+        state.error = null;
       },
-    ),
+      fulfilled: (state, action) => {
+        state.status = "idle";
+        state.users = action.payload;
+      },
+      rejected: (state, action) => {
+        state.status = "failed";
+        state.error =
+          action.error.message?.toString() || "Unable to load users";
+      },
+    }),
   }),
 });
 

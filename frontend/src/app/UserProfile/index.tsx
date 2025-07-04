@@ -6,7 +6,14 @@ import moment from "moment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import QuestionCard from "@/components/QuestionsCard";
 import { getUserLevel } from "@/utils/levelUtils";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { Mail, CalendarDays, BarChart2, Hash } from "lucide-react";
@@ -79,7 +86,9 @@ const UserProfile: React.FC = () => {
         <Card className="shadow-lg">
           <CardHeader className="flex flex-col items-center text-center p-6">
             <Avatar className="w-32 h-32 mb-4 border-4 border-primary-foreground shadow-md">
-              <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.username || user.email}`} />
+              <AvatarImage
+                src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.username || user.email}`}
+              />
               <AvatarFallback className="text-5xl font-semibold">
                 {user.username
                   ? user.username[0].toUpperCase()
@@ -100,7 +109,9 @@ const UserProfile: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col items-center pt-4 border-t">
-            <p className="text-sm text-muted-foreground">"The journey of a thousand miles begins with a single step."</p>
+            <p className="text-sm text-muted-foreground">
+              "The journey of a thousand miles begins with a single step."
+            </p>
           </CardFooter>
         </Card>
 
@@ -110,17 +121,30 @@ const UserProfile: React.FC = () => {
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="flex items-center justify-between">
-              <p className="text-base font-medium text-muted-foreground flex items-center gap-2"><BarChart2 className="w-5 h-5" /> Total Questions:</p>
-              <p className="text-xl font-semibold text-primary">{questions.length}</p>
+              <p className="text-base font-medium text-muted-foreground flex items-center gap-2">
+                <BarChart2 className="w-5 h-5" /> Total Questions:
+              </p>
+              <p className="text-xl font-semibold text-primary">
+                {questions.length}
+              </p>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <p className="text-base font-medium text-muted-foreground flex items-center gap-2"><Hash className="w-5 h-5" /> Active Topics:</p>
-              <p className="text-xl font-semibold text-primary">{new Set(questions.map(question => question.topicId)).size}</p>
+              <p className="text-base font-medium text-muted-foreground flex items-center gap-2">
+                <Hash className="w-5 h-5" /> Active Topics:
+              </p>
+              <p className="text-xl font-semibold text-primary">
+                {new Set(questions.map(question => question.topicId)).size}
+              </p>
             </div>
             <Separator />
             <div>
-              <p className="text-base font-medium text-muted-foreground mb-2">Current Level: <span className="font-semibold text-blue-600">{currentLevel.name}</span></p>
+              <p className="text-base font-medium text-muted-foreground mb-2">
+                Current Level:{" "}
+                <span className="font-semibold text-blue-600">
+                  {currentLevel.name}
+                </span>
+              </p>
               <Progress
                 value={Math.min(
                   (engagementScore / (nextLevel?.threshold || 1)) * 100,
@@ -130,7 +154,9 @@ const UserProfile: React.FC = () => {
               />
               {nextLevel && (
                 <p className="text-sm text-muted-foreground mt-2">
-                  <span className="font-semibold">{pointsToNextLevel}</span> points to reach <span className="font-semibold">{nextLevel.name}</span>
+                  <span className="font-semibold">{pointsToNextLevel}</span>{" "}
+                  points to reach{" "}
+                  <span className="font-semibold">{nextLevel.name}</span>
                 </p>
               )}
             </div>
@@ -141,7 +167,9 @@ const UserProfile: React.FC = () => {
       <div className="md:w-2/3 space-y-6">
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">Questions by {user.username || user.email}</CardTitle>
+            <CardTitle className="text-2xl font-bold">
+              Questions by {user.username || user.email}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {questions.length > 0 ? (
@@ -153,11 +181,12 @@ const UserProfile: React.FC = () => {
                   content={question.content}
                   topicId={question.topicId}
                   createdAt={question.createdAt}
-                  
                 />
               ))
             ) : (
-              <p className="text-center text-muted-foreground">No questions found.</p>
+              <p className="text-center text-muted-foreground">
+                No questions found.
+              </p>
             )}
           </CardContent>
         </Card>
@@ -167,4 +196,3 @@ const UserProfile: React.FC = () => {
 };
 
 export default UserProfile;
-

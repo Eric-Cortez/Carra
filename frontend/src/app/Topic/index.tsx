@@ -40,7 +40,6 @@ const Topic: React.FC = () => {
                   content={quest.content}
                   topicId={quest.topicId}
                   createdAt={quest.createdAt}
-                  
                 />
               ))
             ) : (
