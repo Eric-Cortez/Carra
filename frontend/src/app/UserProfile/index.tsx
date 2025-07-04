@@ -3,9 +3,20 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "@/constants/baseUrl";
 import moment from "moment";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import QuestionCard from "@/components/QuestionsCard";
-import { getUserLevel } from "@/utils/levelUtils"; // Import level utilities
+import { getUserLevel } from "@/utils/levelUtils";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { Mail, CalendarDays, BarChart2, Hash } from "lucide-react";
 
 interface User {
   id: number;
@@ -70,93 +81,115 @@ const UserProfile: React.FC = () => {
     getUserLevel(engagementScore);
 
   return (
-    <div className="flex max-w-6xl mx-auto p-4 space-x-6">
-      <div className="w-1/3 bg-white shadow-md rounded-lg p-6 sticky top-[80px] h-fit mt-6">
-        <div className="flex items-center space-x-4">
-          <Avatar className="w-24 h-24 rounded-full flex items-center justify-center text-4xl">
-            <AvatarFallback>
-              {user.username
-                ? user.username[0].toUpperCase()
-                : user.email[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <h1 className="text-2xl font-bold mb-2">{user.username}</h1>
-            <p className="text-lg text-gray-600 mb-2">
-              <span className="font-semibold">Email:</span> {user.email}
+    <div className="flex flex-col md:flex-row max-w-6xl mx-auto p-6 gap-6">
+      <div className="md:w-1/3 space-y-6">
+        <Card className="shadow-lg">
+          <CardHeader className="flex flex-col items-center text-center p-6">
+            <Avatar className="w-32 h-32 mb-4 border-4 border-primary-foreground shadow-md">
+              <AvatarImage
+                src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.username || user.email}`}
+              />
+              <AvatarFallback className="text-5xl font-semibold">
+                {user.username
+                  ? user.username[0].toUpperCase()
+                  : user.email.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <CardTitle className="text-4xl font-extrabold tracking-tight">
+              {user.username || user.email}
+            </CardTitle>
+            <CardDescription className="text-lg text-muted-foreground flex items-center gap-2 mt-2">
+              <Mail className="w-5 h-5" /> {user.email}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="px-6 pb-4">
+            <div className="flex items-center justify-center text-sm text-muted-foreground">
+              <CalendarDays className="w-4 h-4 mr-2" /> Member Since:{" "}
+              {moment(user.createdAt).format("MMMM D, YYYY")}
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col items-center pt-4 border-t">
+            <p className="text-sm text-muted-foreground">
+              "The journey of a thousand miles begins with a single step."
             </p>
-            <p className="text-sm text-gray-500">
-              <span className="font-semibold">Member Since:</span>{" "}
-              {moment(user.createdAt).format("MMMM YYYY")}
-            </p>
-          </div>
-        </div>
-        <div className="mt-6 bg-gray-50 shadow-sm rounded-lg p-4">
-          <h2 className="text-lg font-semibold mb-4">User Metrics</h2>
-          <div className="space-y-2">
-            <p className="text-sm text-gray-500">
-              <span className="font-semibold">Total Questions:</span>{" "}
-              {questions.length}
-            </p>
-            <p className="text-sm text-gray-500">
-              <span className="font-semibold">Active Topics:</span>{" "}
-              {new Set(questions.map(question => question.topicId)).size}
-            </p>
-            <p className="text-sm text-gray-500">
-              <span className="font-semibold">Current Level:</span>{" "}
-              {currentLevel.name}
-            </p>
-          </div>
+          </CardFooter>
+        </Card>
 
-          <div className="mt-4">
-            <h3 className="text-sm font-semibold text-gray-600 mb-2">
-              Activity Overview
-            </h3>
-            <div className="relative group w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-blue-500 h-2 rounded-full"
-                style={{
-                  width: `${Math.min(
-                    (engagementScore / (nextLevel?.threshold || 1000)) * 100,
-                    100,
-                  )}%`,
-                }}
-              ></div>
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">User Metrics</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <div className="flex items-center justify-between">
+              <p className="text-base font-medium text-muted-foreground flex items-center gap-2">
+                <BarChart2 className="w-5 h-5" /> Total Questions:
+              </p>
+              <p className="text-xl font-semibold text-primary">
+                {questions.length}
+              </p>
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between">
+              <p className="text-base font-medium text-muted-foreground flex items-center gap-2">
+                <Hash className="w-5 h-5" /> Active Topics:
+              </p>
+              <p className="text-xl font-semibold text-primary">
+                {new Set(questions.map(question => question.topicId)).size}
+              </p>
+            </div>
+            <Separator />
+            <div>
+              <p className="text-base font-medium text-muted-foreground mb-2">
+                Current Level:{" "}
+                <span className="font-semibold text-blue-600">
+                  {currentLevel.name}
+                </span>
+              </p>
+              <Progress
+                value={Math.min(
+                  (engagementScore / (nextLevel?.threshold || 1)) * 100,
+                  100,
+                )}
+                className="w-full h-3 bg-muted-foreground/20"
+              />
               {nextLevel && (
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md p-2 shadow-lg">
-                  {pointsToNextLevel} points to reach {nextLevel.name}
-                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  <span className="font-semibold">{pointsToNextLevel}</span>{" "}
+                  points to reach{" "}
+                  <span className="font-semibold">{nextLevel.name}</span>
+                </p>
               )}
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Progress to {nextLevel ? nextLevel.name : "Max Level"} (
-              {Math.min(
-                (engagementScore / (nextLevel?.threshold || 1000)) * 100,
-                100,
-              ).toFixed(1)}
-              %)
-            </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="w-2/3 overflow-y-auto space-y-4">
-        <h2 className="text-xl font-semibold mb-4">
-          Questions by {user.username}
-        </h2>
-        {questions.length > 0 ? (
-          questions.map(question => (
-            <QuestionCard
-              key={question.id}
-              title={question.title}
-              content={question.content}
-              topicId={question.topicId}
-              createdAt={question.createdAt}
-            />
-          ))
-        ) : (
-          <p className="text-center text-gray-500">No questions found.</p>
-        )}
+      <div className="md:w-2/3 space-y-6">
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">
+              Questions by {user.username || user.email}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {questions.length > 0 ? (
+              questions.map(question => (
+                <QuestionCard
+                  key={question.id}
+                  id={question.id}
+                  title={question.title}
+                  content={question.content}
+                  topicId={question.topicId}
+                  createdAt={question.createdAt}
+                />
+              ))
+            ) : (
+              <p className="text-center text-muted-foreground">
+                No questions found.
+              </p>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

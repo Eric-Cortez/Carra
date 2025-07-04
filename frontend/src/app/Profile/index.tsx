@@ -3,67 +3,53 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UNAUTHORIZED_CODE } from "../../constants/statusCodes";
 import { BASE_URL } from "@/constants/baseUrl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { CalendarDays, Mail } from "lucide-react";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useAppSelector } from "../hooks";
-import QuestionCard from "@/components/QuestionsCard";
-
-interface Question {
-  id: number;
-  title: string;
-  topicId: number;
-  content: string;
-  createdAt: string;
-}
+import { useTheme } from "@/components/theme-provider";
 
 interface UserData {
   id: number;
   username: string;
   email: string;
+  bio: string;
   createdAt: string;
-  questions: Question[];
 }
 
-interface UserResponse {
-  user: UserData;
-}
-
-const UserProfile: React.FC = () => {
+const Profile: React.FC = () => {
   const navigate = useNavigate();
+  const currentUser = useAppSelector(state => state.auth.user);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const user = useAppSelector(state => state.auth.user);
   const [error, setError] = useState<string | null>(null);
-
-  // Get data for the last 7 days
-  const getLastSevenDays = (questions: Question[]) => {
-    const last7Days = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      return d.toISOString().split("T")[0];
-    }).reverse();
-
-    const questionsByDate = questions.reduce(
-      (acc: { [key: string]: number }, question) => {
-        const date = new Date(question.createdAt).toISOString().split("T")[0];
-        acc[date] = (acc[date] || 0) + 1;
-        return acc;
-      },
-      {},
-    );
-
-    return last7Days.map(date => ({
-      name: date,
-      total: questionsByDate[date] || 0,
-    }));
-  };
+  const [editableUsername, setEditableUsername] = useState("");
+  const [editableEmail, setEditableEmail] = useState("");
+  const [editableBio, setEditableBio] = useState("");
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const { theme, setTheme } = useTheme();
+  const [feedbackMessage, setFeedbackMessage] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
+      if (!currentUser?.id) {
+        navigate("/login");
+        return;
+      }
       try {
-        const response = await fetch(`${BASE_URL}/users/${user?.id}`, {
+        const response = await fetch(`${BASE_URL}/users/${currentUser.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -72,8 +58,11 @@ const UserProfile: React.FC = () => {
         });
 
         if (response.ok) {
-          const data: UserResponse = await response.json();
+          const data: { user: UserData } = await response.json();
           setUserData(data.user);
+          setEditableUsername(data.user.username || "");
+          setEditableEmail(data.user.email || "");
+          setEditableBio(data.user.bio || "");
         } else {
           setError("Failed to fetch user");
           if (response.status === UNAUTHORIZED_CODE) {
@@ -89,124 +78,145 @@ const UserProfile: React.FC = () => {
     };
 
     fetchUser();
-  }, [navigate, user]);
+  }, [navigate, currentUser]);
+
+  const handleProfileSave = () => {
+    // Simulate API call
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        setFeedbackMessage({
+          message: "Profile updated successfully!",
+          type: "success",
+        });
+        resolve();
+      }, 1000);
+    }).then(() => {
+      setTimeout(() => {
+        setFeedbackMessage(null);
+      }, 3000);
+    });
+  };
+
+  const handlePasswordChange = () => {
+    // Simulate API call
+    return new Promise<void>(resolve => {
+      setTimeout(() => {
+        setFeedbackMessage({
+          message: "Password change initiated!",
+          type: "success",
+        });
+        resolve();
+      }, 1000);
+    }).then(() => {
+      setTimeout(() => {
+        setFeedbackMessage(null);
+      }, 3000);
+    });
+  };
 
   if (error) {
+    return <div className="p-4 text-center text-destructive">{error}</div>;
+  }
+
+  if (!userData) {
     return (
-      <div className="p-4">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-destructive">{error}</p>
-          </CardContent>
-        </Card>
+      <div className="p-4 text-center text-muted-foreground">
+        Loading profile...
       </div>
     );
   }
-
-  if (!user) {
-    return (
-      <div className="p-4">
-        <Card>
-          <CardContent className="pt-6">
-            <p>Loading...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const chartData = userData ? getLastSevenDays(userData.questions) : [];
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Profile</CardTitle>
+    <div className="flex justify-center items-center min-h-[calc(100vh-4rem)] p-4">
+      <Card className="w-full max-w-3xl shadow-lg rounded-2xl p-4">
+        <CardHeader className="flex flex-col items-center text-center">
+          <Avatar className="w-24 h-24 mb-4 border-4 border-primary-foreground shadow-md">
+            <AvatarImage
+              src={`https://api.dicebear.com/6.x/initials/svg?seed=${userData.username || userData.email}`}
+            />
+            <AvatarFallback className="text-4xl font-semibold">
+              {userData.username
+                ? userData.username[0].toUpperCase()
+                : userData.email.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <CardTitle className="text-3xl font-bold">
+            {userData.username || userData.email}
+          </CardTitle>
+          <CardDescription className="text-md text-muted-foreground">
+            {editableBio || "No bio provided."}
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center space-x-4">
-            <Avatar className="h-16 w-16">
-              <AvatarFallback>
-                {user.username
-                  ? user.username[0].toUpperCase()
-                  : user.email[0].toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4" />
-                <span>{user.email}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CalendarDays className="h-4 w-4" />
-                <span>
-                  Joined{" "}
-                  {userData
-                    ? new Date(userData.createdAt).toLocaleDateString()
-                    : "N/A"}
-                </span>
-              </div>
+        <CardContent>
+          {feedbackMessage && (
+            <div
+              className={`p-3 mb-4 rounded-md text-center ${feedbackMessage.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+            >
+              {feedbackMessage.message}
             </div>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Questions Overview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData}>
-                    <XAxis
-                      dataKey="name"
-                      stroke="#888888"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#888888"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={value => `${value}`}
-                    />
-                    <Bar
-                      dataKey="total"
-                      fill="currentColor"
-                      radius={[4, 4, 0, 0]}
-                      className="fill-primary"
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+          )}
+          <Tabs defaultValue="profile" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+            </TabsList>
+            <TabsContent value="profile" className="p-4 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  value={editableUsername}
+                  onChange={e => setEditableUsername(e.target.value)}
+                />
               </div>
-            </CardContent>
-          </Card>
-
-          <Separator />
-
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Questions</h2>
-            <div className="space-y-4 ">
-              {userData && userData.questions.length > 0 ? (
-                userData.questions.map(quest => (
-                  <QuestionCard
-                    key={quest.id}
-                    title={quest.title}
-                    content={quest.content}
-                    topicId={quest.topicId}
-                    createdAt={quest.createdAt}
-                  />
-                ))
-              ) : (
-                <p className="text-muted-foreground">No questions posted yet</p>
-              )}
-            </div>
-          </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={editableEmail}
+                  onChange={e => setEditableEmail(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio</Label>
+                <Input
+                  id="bio"
+                  value={editableBio}
+                  onChange={e => setEditableBio(e.target.value)}
+                />
+              </div>
+              <Button onClick={handleProfileSave}>Save Profile</Button>
+            </TabsContent>
+            <TabsContent value="settings" className="p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="email-notifications">Email Notifications</Label>
+                <Switch
+                  id="email-notifications"
+                  checked={emailNotifications}
+                  onCheckedChange={setEmailNotifications}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="dark-mode">Dark Mode</Label>
+                <Switch
+                  id="dark-mode"
+                  checked={theme === "dark"}
+                  onCheckedChange={(checked: boolean) =>
+                    setTheme(checked ? "dark" : "light")
+                  }
+                />
+              </div>
+            </TabsContent>
+            <TabsContent value="security" className="p-4 space-y-4">
+              <Button onClick={handlePasswordChange}>Change Password</Button>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default UserProfile;
+export default Profile;
