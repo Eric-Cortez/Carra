@@ -20,7 +20,7 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
-  _id, // Changed to _id to indicate it's unused within the component
+  id, // Renamed to match the interface
   title,
   content,
   topicId,
