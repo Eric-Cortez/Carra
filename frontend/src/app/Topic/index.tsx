@@ -35,10 +35,12 @@ const Topic: React.FC = () => {
               filteredQuestions.map(quest => (
                 <QuestionCard
                   key={quest.id}
+                  id={quest.id}
                   title={quest.title}
                   content={quest.content}
                   topicId={quest.topicId}
                   createdAt={quest.createdAt}
+                  
                 />
               ))
             ) : (

@@ -7,6 +7,7 @@ export interface Question {
   title: string;
   topicId: number;
   userId: number;
+  
 }
 
 interface QuestionState {
