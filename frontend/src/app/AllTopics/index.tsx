@@ -17,7 +17,7 @@ const AllTopics: React.FC = () => {
     dispatch(loadTopicsAsync());
   }, [dispatch]);
 
-  const getTopicsWithQuestionCount = (topics: Topic[], questions: Question[]) => {
+  const getTopicsWithQuestionCount = (topics: any[], questions: any[]) => {
     if (!topics || !questions) return [];
 
     const topicCounts = topics.map(topic => ({
