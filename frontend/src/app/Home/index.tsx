@@ -27,11 +27,13 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center justify-end p-6">
-        <div className="w-1/2 mr-4">
+      <div className="flex items-center justify-center p-6">
+        <div className="w-full max-w-lg">
           <SearchBar onSearch={setSearchQuery} />
         </div>
-        <AskQuestionModalBtn />
+        <div className="ml-4">
+          <AskQuestionModalBtn />
+        </div>
       </div>
       <div className="flex items-center justify-center p-6">
         {status === "loading" && <p>Loading...</p>}

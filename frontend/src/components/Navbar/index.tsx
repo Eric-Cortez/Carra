@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <ModeToggle />
+                <ModeToggle setTheme={setTheme} />
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <AccountDropdown />

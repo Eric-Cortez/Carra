@@ -4,6 +4,7 @@ go 1.23.3
 
 require (
 	github.com/gin-contrib/cors v1.7.3
+	github.com/gin-gonic/contrib v0.0.0-20250113154928-93b827325fec
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
@@ -13,7 +14,6 @@ require (
 )
 
 require (
-	github.com/gin-gonic/contrib v0.0.0-20250113154928-93b827325fec // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect

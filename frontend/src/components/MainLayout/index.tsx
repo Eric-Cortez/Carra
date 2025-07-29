@@ -11,6 +11,8 @@ import type { Topic } from "@/features/topics/topicSlice";
 import type { Question } from "@/features/questions/questionSlice";
 import { loadTopicsAsync } from "@/features/topics/topicSlice";
 import { loadQuestionsAsync } from "@/features/questions/questionSlice";
+import Navbar from "@/components/Navbar";
+import { useTheme } from "@/components/theme-provider";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -21,6 +23,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { topics } = useAppSelector((state: RootState) => state.topics);
   const { questions } = useAppSelector((state: RootState) => state.questions);
   const dispatch = useAppDispatch();
+  const { setTheme } = useTheme();
 
   useEffect(() => {
     dispatch(loadTopicsAsync());
@@ -45,6 +48,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
   return (
     <div className="flex min-h-screen">
+      <Navbar setTheme={setTheme} />
       {/* Sidebar */}
       <div
         className={cn(

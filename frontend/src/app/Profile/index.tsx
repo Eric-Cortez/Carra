@@ -161,7 +161,10 @@ const Profile: React.FC = () => {
               <TabsTrigger value="settings">Settings</TabsTrigger>
               <TabsTrigger value="security">Security</TabsTrigger>
             </TabsList>
-            <TabsContent value="profile" className="p-4 space-y-4">
+            <TabsContent
+              value="profile"
+              className="p-4 space-y-4 min-h-[280px]"
+            >
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
@@ -189,7 +192,10 @@ const Profile: React.FC = () => {
               </div>
               <Button onClick={handleProfileSave}>Save Profile</Button>
             </TabsContent>
-            <TabsContent value="settings" className="p-4 space-y-4">
+            <TabsContent
+              value="settings"
+              className="p-4 space-y-4 min-h-[280px]"
+            >
               <div className="flex items-center justify-between">
                 <Label htmlFor="email-notifications">Email Notifications</Label>
                 <Switch
@@ -209,7 +215,10 @@ const Profile: React.FC = () => {
                 />
               </div>
             </TabsContent>
-            <TabsContent value="security" className="p-4 space-y-4">
+            <TabsContent
+              value="security"
+              className="p-4 space-y-4 min-h-[280px]"
+            >
               <Button onClick={handlePasswordChange}>Change Password</Button>
             </TabsContent>
           </Tabs>
