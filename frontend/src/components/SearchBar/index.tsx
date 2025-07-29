@@ -11,7 +11,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       type="search"
       placeholder="Search questions..."
       onChange={e => onSearch(e.target.value)}
-      className="w-full"
+      className="w-full shadow-sm"
     />
   );
 };

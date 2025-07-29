@@ -6,7 +6,6 @@ import Users from "./app/Users";
 import NotFound from "./app/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import { ThemeProvider } from "./components/theme-provider";
-import Navbar from "./components/Navbar";
 import Login from "./app/login";
 import Profile from "./app/Profile";
 import Topic from "./app/Topic";
@@ -19,7 +18,6 @@ const App = () => {
   return (
     <ThemeProvider storageKey="vite-ui-theme">
       <BrowserRouter>
-        <PrivateRoute element={<Navbar />} />
         <div className="pt-16">
           <MainLayout>
             <Routes>

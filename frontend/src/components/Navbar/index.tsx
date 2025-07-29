@@ -11,7 +11,11 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import AccountDropdown from "../account-dropdown";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  setTheme: (theme: "dark" | "light" | "system") => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ setTheme }) => {
   return (
     <div
       className={cn("fixed top-0 z-50 w-full bg-opacity-70 backdrop-blur-md")}
@@ -42,7 +46,7 @@ const Navbar: React.FC = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <ModeToggle />
+                <ModeToggle setTheme={setTheme} />
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <AccountDropdown />
