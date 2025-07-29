@@ -20,7 +20,6 @@ interface QuestionCardProps {
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
-  id, 
   title,
   content,
   topicId,
